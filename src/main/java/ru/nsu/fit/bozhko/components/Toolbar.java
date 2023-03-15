@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class Toolbar extends JToolBar {
     private final ButtonGroup group = new ButtonGroup();
-    private final Filter filter = new Filter();
+    //private final Filter filter = new Filter();
 
     public Toolbar(GraphicsPanel panel){
         JRadioButton saveButton = new JRadioButton();
@@ -27,7 +27,7 @@ public class Toolbar extends JToolBar {
         JRadioButton blackWhiteButton = new JRadioButton();
         blackWhiteButton.setIcon(new ImageIcon("src/main/resources/open.png"));
         blackWhiteButton.addActionListener(e -> {
-            filter.blackWhite(panel.getImage());
+            //filter.floydSteinberg(panel.getImage());
             panel.repaint();
         });
         blackWhiteButton.setToolTipText("Black white");
