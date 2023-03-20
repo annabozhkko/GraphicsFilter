@@ -1,12 +1,15 @@
 package ru.nsu.fit.bozhko.components;
 
-import ru.nsu.fit.bozhko.tools.Filter;
+import ru.nsu.fit.bozhko.tools.*;
 
 import javax.swing.*;
 
 public class Toolbar extends JToolBar {
     private final ButtonGroup group = new ButtonGroup();
-    //private final Filter filter = new Filter();
+    FloydSteinberg floydSteinberg = new FloydSteinberg();
+    Dither dither = new Dither();
+    GaussianBlur gaussianBlur = new GaussianBlur();
+    Embossing embossing = new Embossing();
 
     public Toolbar(GraphicsPanel panel){
         JRadioButton saveButton = new JRadioButton();
@@ -23,16 +26,15 @@ public class Toolbar extends JToolBar {
         add(openFileButton);
         group.add(openFileButton);
 
-        //
-        JRadioButton blackWhiteButton = new JRadioButton();
-        blackWhiteButton.setIcon(new ImageIcon("src/main/resources/open.png"));
-        blackWhiteButton.addActionListener(e -> {
-            //filter.floydSteinberg(panel.getImage());
+        JRadioButton filterButton = new JRadioButton();
+        filterButton.setIcon(new ImageIcon("src/main/resources/open.png"));
+        filterButton.addActionListener(e -> {
+            ParametersFrame parametersFrame = new ParametersFrame(gaussianBlur, panel.getImage());
             panel.repaint();
         });
-        blackWhiteButton.setToolTipText("Black white");
-        add(blackWhiteButton);
-        group.add(blackWhiteButton);
+        filterButton.setToolTipText("Filter");
+        add(filterButton);
+        group.add(filterButton);
 
         JRadioButton aboutButton = new JRadioButton();
         aboutButton.setIcon(new ImageIcon("src/main/resources/about.gif"));

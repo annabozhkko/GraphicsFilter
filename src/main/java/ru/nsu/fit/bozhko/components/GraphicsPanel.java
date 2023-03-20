@@ -1,7 +1,5 @@
 package ru.nsu.fit.bozhko.components;
 
-import ru.nsu.fit.bozhko.tools.Filter;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -12,7 +10,6 @@ import static java.lang.Math.max;
 
 public class GraphicsPanel extends JPanel implements MouseListener {
     private BufferedImage image;
-    private Filter filter = new Filter();
     private int width, height;
 
     public GraphicsPanel(int width, int height){
