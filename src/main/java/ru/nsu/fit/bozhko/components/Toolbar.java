@@ -10,6 +10,7 @@ public class Toolbar extends JToolBar {
     Dither dither = new Dither();
     GaussianBlur gaussianBlur = new GaussianBlur();
     Embossing embossing = new Embossing();
+    MedianFilter medianFilter = new MedianFilter();
 
     public Toolbar(GraphicsPanel panel){
         JRadioButton saveButton = new JRadioButton();
@@ -29,7 +30,7 @@ public class Toolbar extends JToolBar {
         JRadioButton filterButton = new JRadioButton();
         filterButton.setIcon(new ImageIcon("src/main/resources/open.png"));
         filterButton.addActionListener(e -> {
-            ParametersFrame parametersFrame = new ParametersFrame(gaussianBlur, panel.getImage());
+            ParametersFrame parametersFrame = new ParametersFrame(medianFilter, panel.getImage());
             panel.repaint();
         });
         filterButton.setToolTipText("Filter");
