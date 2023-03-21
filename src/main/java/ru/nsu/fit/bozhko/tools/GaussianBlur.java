@@ -31,16 +31,16 @@ public class GaussianBlur implements Filter{
                 double sumB = 0;
                 for(int u = -sizeMatrix; u <= sizeMatrix; ++u){
                     for(int v = -sizeMatrix; v <= sizeMatrix; ++v){
+                        // края !!!
                         if(x + u >= 0 && x + u < image.getWidth() && y + v >= 0 && y + v < image.getHeight()) {
-                            RGB rgb = new RGB(image.getRGB(x + u, y + v));
-                            sumR += matrix[u + sizeMatrix][v + sizeMatrix] * rgb.getR();
-                            sumG += matrix[u + sizeMatrix][v + sizeMatrix] * rgb.getG();
-                            sumB += matrix[u + sizeMatrix][v + sizeMatrix] * rgb.getB();
+                            int rgb = image.getRGB(x + u, y + v);
+                            sumR += matrix[u + sizeMatrix][v + sizeMatrix] * ((rgb >> 16) & 0xff);
+                            sumG += matrix[u + sizeMatrix][v + sizeMatrix] * ((rgb >> 8) & 0xff);
+                            sumB += matrix[u + sizeMatrix][v + sizeMatrix] * (rgb & 0xff);
                         }
                     }
                 }
-                RGB newRGB = new RGB(sumR, sumG, sumB, 255);
-                newImage.setRGB(x, y, newRGB.toInt());
+                newImage.setRGB(x, y, (255 << 24) | ((int)sumR << 16) | ((int)sumG << 8) | (int)sumB);
             }
         }
 

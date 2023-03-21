@@ -10,7 +10,6 @@ public class Embossing implements Filter{
     @Override
     public void execute(BufferedImage image){
         int [][]matrix = new int[][]{{0, 1, 0}, {-1, 0, 1}, {0, -1, 0}};
-
         BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
         for(int x = 0; x < image.getWidth(); ++x){
@@ -21,18 +20,17 @@ public class Embossing implements Filter{
                 for(int u = -1; u <= 1; ++u){
                     for(int v = -1; v <= 1; ++v){
                         if(x + u >= 0 && x + u < image.getWidth() && y + v >= 0 && y + v < image.getHeight()) {
-                            RGB rgb = new RGB(image.getRGB(x + u, y + v));
-                            sumR += matrix[u + 1][v + 1] * rgb.getR();
-                            sumG += matrix[u + 1][v + 1] * rgb.getG();
-                            sumB += matrix[u + 1][v + 1] * rgb.getB();
+                            int rgb = image.getRGB(x + u, y + v);
+                            sumR += matrix[u + 1][v + 1] * ((rgb >> 16) & 0xff);
+                            sumG += matrix[u + 1][v + 1] * ((rgb >> 8) & 0xff);
+                            sumB += matrix[u + 1][v + 1] * (rgb & 0xff);
                         }
                     }
                 }
                 sumR += 128;
                 sumG += 128;
                 sumB += 128;
-                RGB newRGB = new RGB(sumR, sumG, sumB, 255);
-                newImage.setRGB(x, y, newRGB.toInt());
+                newImage.setRGB(x, y, (255 << 24) | ((int)sumR << 16) | ((int)sumG << 8) | (int)sumB);
             }
         }
 

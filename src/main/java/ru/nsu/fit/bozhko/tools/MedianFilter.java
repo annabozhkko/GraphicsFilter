@@ -21,10 +21,10 @@ public class MedianFilter implements Filter{
                 for(int i = x - 2; i <= x + 2; ++i){
                     for(int j = y - 2; j <= y + 2; ++j){
                         if(i >= 0 && i < image.getWidth() && j >= 0 && j < image.getHeight()){
-                            RGB rgb = new RGB(image.getRGB(i, j));
-                            R[k] = rgb.getR();
-                            G[k] = rgb.getG();
-                            B[k] = rgb.getB();
+                            int rgb = image.getRGB(i, j);
+                            R[k] = (rgb >> 16) & 0xff;
+                            G[k] = (rgb >> 8) & 0xff;
+                            B[k] = rgb & 0xff;
                             k++;
                         }
                     }
@@ -33,8 +33,7 @@ public class MedianFilter implements Filter{
                 Arrays.sort(G);
                 Arrays.sort(B);
 
-                RGB newRGB = new RGB(R[12], G[12], B[12], 255);
-                newImage.setRGB(x, y, newRGB.toInt());
+                newImage.setRGB(x, y, (255 << 24) | ((int)R[12] << 16) | ((int)G[12] << 8) | (int)B[12]);
             }
         }
         Graphics2D g = image.createGraphics();

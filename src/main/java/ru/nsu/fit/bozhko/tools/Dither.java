@@ -2,7 +2,6 @@ package ru.nsu.fit.bozhko.tools;
 
 import ru.nsu.fit.bozhko.components.Parameter;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,14 +9,14 @@ import java.util.List;
 // Аня
 public class Dither implements Filter{
     private List<Parameter> parameters = new ArrayList<>();
-    private ArrayList<RGB> palette = new ArrayList<>();
+    private ArrayList<Integer> palette = new ArrayList<>();
 
     @Override
     public void execute(BufferedImage image) {
         for(int i = 0; i < 2; ++i){
             for(int j  = 0; j < 2; ++j){
                 for(int k = 0 ; k < 2; ++k){
-                    palette.add(new RGB(i * 255, j * 255, k * 255, 255));
+                    palette.add((255 << 24) | (i * 255 << 16) | (j * 255 << 8) | k * 255);
                 }
             }
         }
@@ -30,10 +29,10 @@ public class Dither implements Filter{
 
         for(int x = 0; x < image.getWidth(); ++x) {
             for (int y = 0; y < image.getHeight(); ++y) {
-                Color color = new Color(image.getRGB(x, y));
-                int R = color.getRed();
-                int G = color.getGreen();
-                int B = color.getBlue();
+                int rgb = image.getRGB(x, y);
+                int R = (rgb >> 16) & 0xff;
+                int G = (rgb >> 8) & 0xff;
+                int B =  rgb & 0xff;
 
                 int i = x % 8;
                 int j = y % 8;
@@ -49,28 +48,29 @@ public class Dither implements Filter{
                 double newG = G + r * (matrix[i][j] - 1./2); // >= 128 ? 255 : 0;
                 double newB = B + r * (matrix[i][j] - 1./2); // >= 128 ? 255 : 0;
 
-                RGB rgb = new RGB(newR, newG, newB, 255);
-                RGB newRGB = getNearestColor(rgb);
+                int newRGB = getNearestColor(newR, newG, newB);
 
                 //Color newColor = new Color((int)newR, (int)newG, (int)newB);
-                image.setRGB(x, y, newRGB.toInt());
+                image.setRGB(x, y, newRGB);
             }
         }
     }
 
-    public double diff(RGB color1, RGB color2) {
-        double rdiff = color1.getR() - color2.getR();
-        double gdiff = color1.getG() - color2.getG();
-        double bdiff = color1.getB() - color2.getB();
+    public double diff(double R1, double G1, double B1, double R2, double G2, double B2) {
+        double rdiff = R1 - R2;
+        double gdiff = G1 - G2;
+        double bdiff = B1 - B2;
         return rdiff * rdiff + gdiff * gdiff + bdiff * bdiff;
     }
 
-    private RGB getNearestColor(RGB color){
-        RGB resultColor = palette.get(0);
-        double minDiff = diff(color, palette.get(0));
+    private int getNearestColor(double R, double G, double B){
+        int resultColor = palette.get(0);
+        double minDiff = diff(R, G, B, (resultColor >> 16) & 0xff, (resultColor >> 8) & 0xff,
+                resultColor & 0xff);
 
         for (int i = 1; i < palette.size(); ++i){
-            double newDiff = diff(color, palette.get(i));
+            double newDiff = diff(R, G, B, (palette.get(i) >> 16) & 0xff, (palette.get(i) >> 8) & 0xff,
+                    palette.get(i) & 0xff);
             if(minDiff > newDiff){
                 minDiff = newDiff;
                 resultColor = palette.get(i);
