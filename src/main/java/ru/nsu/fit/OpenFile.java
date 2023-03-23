@@ -1,4 +1,4 @@
-package ru.nsu.fit.bozhko.components;
+package ru.nsu.fit;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

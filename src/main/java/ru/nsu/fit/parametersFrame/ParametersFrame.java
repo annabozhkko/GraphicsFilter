@@ -1,6 +1,7 @@
-package ru.nsu.fit.bozhko.components;
+package ru.nsu.fit.parametersFrame;
 
-import ru.nsu.fit.bozhko.tools.Filter;
+import ru.nsu.fit.GraphicsPanel;
+import ru.nsu.fit.filters.Filter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,26 +10,23 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class ParametersFrame extends JDialog {
+public class ParametersFrame {
     private List<Parameter> parameters;
     private JPanel panel = new JPanel();
+    private BufferedImage filterImage;
 
-    public ParametersFrame(Filter filter, BufferedImage image){
+    public ParametersFrame(Filter filter, BufferedImage originalImage, GraphicsPanel gPanel){
         parameters = filter.getParameters();
 
         if (parameters == null){
-            filter.execute(image);
+            gPanel.parameter = false;
+            gPanel.setFilter(filter.execute(originalImage));
             return;
         }
 
-        setPreferredSize(new Dimension(450, 100 * parameters.size()));
-        setModalityType(Dialog.ModalityType.TOOLKIT_MODAL);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        add(panel);
-
         for(Parameter parameter : parameters){
             JTextField editBox = new JTextField();
-            JSlider slider = new JSlider(parameter.getMin(), parameter.getMax());
+            JSlider slider = new JSlider((int)parameter.getMin(),(int) parameter.getMax());
 
             editBox.setPreferredSize(new Dimension(100, 30));
 
@@ -56,30 +54,19 @@ public class ParametersFrame extends JDialog {
                 editBox.setText(Integer.toString(source.getValue()));
                 parameter.setValue(source.getValue());
             });
-            slider.setValue(parameter.getValue());
-            editBox.setText(Integer.toString(parameter.getValue()));
+            slider.setValue((int)parameter.getValue());
+            editBox.setText(Integer.toString((int)parameter.getValue()));
 
             panel.add(slider);
             panel.add(editBox);
             panel.add(new JLabel(parameter.getName()));
         }
 
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(e -> dispose());
-        cancelButton.setPreferredSize(new Dimension(100, 30));
-
-        JButton okButton = new JButton("Ok");
-        okButton.setPreferredSize(new Dimension(100, 30));
-
-        okButton.addActionListener(e -> {
-            filter.execute(image);
-            dispose();
-        });
-
-        panel.add(cancelButton);
-        panel.add(okButton);
-
-        pack();
-        setVisible(true);
+        int option = JOptionPane.showOptionDialog(null, panel, "Enter the parameters",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if (option == JOptionPane.OK_OPTION) {
+            gPanel.parameter = true;
+            gPanel.setFilter(filter.execute(originalImage));
+        }
     }
 }

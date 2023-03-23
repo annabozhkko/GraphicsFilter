@@ -1,13 +1,13 @@
-package ru.nsu.fit.bozhko.tools;
+package ru.nsu.fit.filters;
 
-import ru.nsu.fit.bozhko.components.Parameter;
+import ru.nsu.fit.parametersFrame.Parameter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class Embossing implements Filter{
-    @Override
+public class Embossing{
+  //  @Override
     public void execute(BufferedImage image){
         int [][]matrix = new int[][]{{0, 1, 0}, {-1, 0, 1}, {0, -1, 0}};
         BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -39,7 +39,7 @@ public class Embossing implements Filter{
 
     }
 
-    @Override
+  //  @Override
     public List<Parameter> getParameters() {
         return null;
     }

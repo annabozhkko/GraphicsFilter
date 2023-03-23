@@ -1,4 +1,4 @@
-package ru.nsu.fit.bozhko.components;
+package ru.nsu.fit;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,7 +15,7 @@ public class SaveFile extends FileDialog {
             File file = new File(getDirectory() + getFile());
             try {
                 file.createNewFile();
-                ImageIO.write(panel.getImage(), "png", file);
+                ImageIO.write(panel.getFilterImage(), "png", file);
             } catch (IOException e) {
                 e.printStackTrace();
             }

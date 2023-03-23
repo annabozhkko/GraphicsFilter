@@ -1,14 +1,14 @@
-package ru.nsu.fit.bozhko.tools;
+package ru.nsu.fit.filters;
 
-import ru.nsu.fit.bozhko.components.Parameter;
+import ru.nsu.fit.parametersFrame.Parameter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
-public class MedianFilter implements Filter{
-    @Override
+public class MedianFilter {
+   // @Override
     public void execute(BufferedImage image) {
         BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
@@ -40,7 +40,7 @@ public class MedianFilter implements Filter{
         g.drawImage(newImage, 0, 0,  image.getWidth(), image.getHeight(),null);
     }
 
-    @Override
+  //  @Override
     public List<Parameter> getParameters() {
         return null;
     }

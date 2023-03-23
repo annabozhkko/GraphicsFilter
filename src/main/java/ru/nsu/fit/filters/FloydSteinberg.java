@@ -1,17 +1,17 @@
-package ru.nsu.fit.bozhko.tools;
+package ru.nsu.fit.filters;
 
-import ru.nsu.fit.bozhko.components.Parameter;
+import ru.nsu.fit.parametersFrame.Parameter;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 // Аня
-public class FloydSteinberg implements Filter{
+public class FloydSteinberg{
     private List<Parameter> parameters = new ArrayList<>();
     private ArrayList<Integer> palette = new ArrayList<>();
 
-    @Override
+  //  @Override
     public void execute(BufferedImage image) {
         int[] values = {0, 128, 255};
         for(int i : values){
@@ -96,7 +96,7 @@ public class FloydSteinberg implements Filter{
     }
 
 
-    @Override
+  //  @Override
     public List<Parameter> getParameters() {
         return parameters;
     }

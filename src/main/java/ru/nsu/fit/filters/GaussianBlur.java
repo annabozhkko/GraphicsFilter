@@ -1,13 +1,13 @@
-package ru.nsu.fit.bozhko.tools;
+package ru.nsu.fit.filters;
 
-import ru.nsu.fit.bozhko.components.Parameter;
+import ru.nsu.fit.parametersFrame.Parameter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GaussianBlur implements Filter{
+public class GaussianBlur {
     private List<Parameter> parameters = new ArrayList<>();
     private double [][] matrix;
     private int sizeMatrix;
@@ -16,9 +16,9 @@ public class GaussianBlur implements Filter{
         parameters.add(new Parameter("Size matrix", 1, 5));
     }
 
-    @Override
+   // @Override
     public void execute(BufferedImage image){
-        sizeMatrix = parameters.get(0).getValue();
+        sizeMatrix = (int)parameters.get(0).getValue();
         matrix = new double[sizeMatrix * 2 + 1][sizeMatrix * 2 + 1];
         createGaussian();
         //matrix = new double[][]{{0, 1./6, 0}, {1./6, 2./6, 1./6}, {0, 1./6, 0}};
@@ -56,7 +56,7 @@ public class GaussianBlur implements Filter{
         }
     }
 
-    @Override
+   // @Override
     public List<Parameter> getParameters() {
         return parameters;
     }

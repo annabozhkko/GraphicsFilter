@@ -1,18 +1,18 @@
-package ru.nsu.fit.bozhko.components;
+package ru.nsu.fit.parametersFrame;
 
 public class Parameter {
-    private int value;
+    private double value;
     private String name;
-    private int min, max;
+    private double min, max;
 
-    public Parameter(String name, int initValue, int endValue){
+    public Parameter(String name, double initValue, double endValue){
         this.name = name;
         value = initValue;
         min = initValue;
         max = endValue;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
@@ -24,11 +24,11 @@ public class Parameter {
         return name;
     }
 
-    public int getMax() {
+    public double getMax() {
         return max;
     }
 
-    public int getMin() {
+    public double getMin() {
         return min;
     }
 }

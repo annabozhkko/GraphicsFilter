@@ -1,17 +1,17 @@
-package ru.nsu.fit.bozhko.tools;
+package ru.nsu.fit.filters;
 
-import ru.nsu.fit.bozhko.components.Parameter;
+import ru.nsu.fit.parametersFrame.Parameter;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 // Аня
-public class Dither implements Filter{
+public class Dither{
     private List<Parameter> parameters = new ArrayList<>();
     private ArrayList<Integer> palette = new ArrayList<>();
 
-    @Override
+    //@Override
     public void execute(BufferedImage image) {
         for(int i = 0; i < 2; ++i){
             for(int j  = 0; j < 2; ++j){
@@ -80,7 +80,7 @@ public class Dither implements Filter{
         return resultColor;
     }
 
-    @Override
+  //  @Override
     public List<Parameter> getParameters() {
         return parameters;
     }
