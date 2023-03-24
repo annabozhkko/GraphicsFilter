@@ -6,10 +6,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HighlightBorder implements  Filter{
+public class HighlightBorderRoberts implements  Filter{
     private List<Parameter> parameters = new ArrayList<>();
 
-    public HighlightBorder(){
+    public HighlightBorderRoberts(){
         parameters.add(new Parameter("binarization parameter", 50, 1020));
     }
 

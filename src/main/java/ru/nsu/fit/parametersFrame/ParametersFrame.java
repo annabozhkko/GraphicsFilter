@@ -17,6 +17,7 @@ public class ParametersFrame {
 
     public ParametersFrame(Filter filter, BufferedImage originalImage, GraphicsPanel gPanel){
         parameters = filter.getParameters();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         if (parameters == null){
             gPanel.setParameter(false);
@@ -25,6 +26,7 @@ public class ParametersFrame {
         }
 
         for(Parameter parameter : parameters){
+            JPanel oneLineParameters = new JPanel(new FlowLayout());
             JTextField editBox = new JTextField();
             JSlider slider = new JSlider((int)parameter.getMin(),(int) parameter.getMax());
 
@@ -57,9 +59,10 @@ public class ParametersFrame {
             slider.setValue((int)parameter.getValue());
             editBox.setText(Integer.toString((int)parameter.getValue()));
 
-            panel.add(slider);
-            panel.add(editBox);
-            panel.add(new JLabel(parameter.getName()));
+            oneLineParameters.add(slider);
+            oneLineParameters.add(editBox);
+            oneLineParameters.add(new JLabel(parameter.getName()));
+            panel.add(oneLineParameters);
         }
 
         int option = JOptionPane.showOptionDialog(null, panel, "Enter the parameters",

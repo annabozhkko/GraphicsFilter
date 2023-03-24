@@ -16,7 +16,7 @@ public class MenuCreator {
     //filters
     private Negative negative  = new Negative();
     private GammaCorrection gamma = new GammaCorrection();
-    private HighlightBorder highlightBorder = new HighlightBorder();
+    private HighlightBorderRoberts highlightBorderRoberts = new HighlightBorderRoberts();
     private Dither dither1 = new Dither();
     private FloydSteinberg floydSteinberg1 = new FloydSteinberg();
     private Embossing embossing = new Embossing();
@@ -115,7 +115,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                         new ParametersFrame(highlightBorder, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                         new ParametersFrame(highlightBorderRoberts, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
                     }
                 });
 
