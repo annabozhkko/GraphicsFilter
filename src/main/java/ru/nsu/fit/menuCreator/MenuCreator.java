@@ -221,6 +221,42 @@ public class MenuCreator {
                     }
                 });
 
+        JRadioButtonMenuItem itemBlackWhite = componentCreator.createRadioButtonMenuItem("Black white", "Black white", menuGroupFilter, filter);
+        JToggleButton toolBarBlackWhite = componentCreator.createJToggleButton("Black white", "src/main/resources/blackwhite.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemBlackWhite, toolBarBlackWhite);
+
+        componentCreator.setAction(itemBlackWhite, toolBarBlackWhite,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(blackWhite, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem itemSharpening = componentCreator.createRadioButtonMenuItem("Sharpening", "Sharpening", menuGroupFilter, filter);
+        JToggleButton toolBarSharpening = componentCreator.createJToggleButton("Sharpening", "src/main/resources/sharpening.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemSharpening, toolBarSharpening);
+
+        componentCreator.setAction(itemSharpening, toolBarSharpening,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(sharpeningFilter, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem itemRussia = componentCreator.createRadioButtonMenuItem("Russia", "Russia", menuGroupFilter, filter);
+        JToggleButton toolBarRussia = componentCreator.createJToggleButton("Russia", "src/main/resources/russian.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemRussia, toolBarRussia);
+
+        componentCreator.setAction(itemRussia, toolBarRussia,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(russiaFilter, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
 
         JMenuItem regime = componentCreator.createJMenuItem("Fit to screen", "Fit to screen", "src/main/resources/regime.png", file);
         JButton toolBarRegime = componentCreator.createJButton("Fit to screen", "src/main/resources/regime.png");
