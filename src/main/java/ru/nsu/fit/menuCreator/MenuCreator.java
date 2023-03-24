@@ -22,6 +22,10 @@ public class MenuCreator {
     private Embossing embossing = new Embossing();
     private GaussianBlur gaussianBlur = new GaussianBlur();
     private Watercolorization watercolorization = new Watercolorization();
+    private Rotate rotate = new Rotate();
+    private BlackWhite blackWhite = new BlackWhite();
+    private SharpeningFilter sharpeningFilter = new SharpeningFilter();
+    private RussiaFilter russiaFilter = new RussiaFilter();
 
     public MenuCreator(MainFrame frame) {
         mainFrame = frame;
@@ -178,6 +182,19 @@ public class MenuCreator {
                         new ParametersFrame(watercolorization, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
                     }
                 });
+
+        JRadioButtonMenuItem itemRotate = componentCreator.createRadioButtonMenuItem("Rotate", "Rotate", menuGroupFilter, filter);
+        JToggleButton toolBarRotate = componentCreator.createJToggleButton("Rotate", "src/main/resources/watercolorization.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemRotate, toolBarRotate);
+
+        componentCreator.setAction(itemRotate, toolBarRotate,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(rotate, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
 
         JMenuItem regime = componentCreator.createJMenuItem("Fit to screen", "Fit to screen", "src/main/resources/regime.png", file);
         JButton toolBarRegime = componentCreator.createJButton("Fit to screen", "src/main/resources/regime.png");
