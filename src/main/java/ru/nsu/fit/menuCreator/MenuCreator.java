@@ -114,6 +114,18 @@ public class MenuCreator {
                     }
                 });
 
+
+        JMenuItem regime = componentCreator.createJMenuItem("Fit to screen", "Fit to screen", "src/main/resources/regime.png", file);
+        JButton toolBarRegime = componentCreator.createJButton("Fit to screen", "src/main/resources/regime.png");
+
+        componentCreator.setAction(regime, toolBarRegime,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        mainFrame.gPanel.fitToScreen();
+                    }
+                });
+
     }
 
 }
