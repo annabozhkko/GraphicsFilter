@@ -18,7 +18,14 @@ public class FloydSteinberg implements Filter{
 
     @Override
     public BufferedImage execute(BufferedImage image) {
-        int[] values = {0, 128, 255};
+        int quantizationNumber = (int)parameters.get(0).getValue();
+        int[] values = new int[quantizationNumber];
+        int step = 256 / (quantizationNumber - 1);
+        //int[] values = {0, 128, 255};
+        for(int i = 0; i < quantizationNumber; ++i){
+            values[i] = i * step;
+        }
+        //System
         for(int i : values){
             for(int j : values){
                 for(int k : values){

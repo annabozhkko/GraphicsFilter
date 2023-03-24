@@ -156,6 +156,7 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
     public BufferedImage getFilterImage(){ return filterImage; }
 
     public void fitToScreen(){
+        new InterpolationFrame(this);
         if(isRealRegime){
             double widthFrac = (double) width / screenWidth;
             double heightFrac = (double) height / screenHeight;
