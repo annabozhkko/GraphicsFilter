@@ -45,7 +45,9 @@ public class OrderedDitheringM implements Filter {
 
 
     public OrderedDitheringM() {
-        parameters.add(new Parameter("quantization level", 2, 256));
+        parameters.add(new Parameter("quantization level Red", 2, 256));
+        parameters.add(new Parameter("quantization level Green", 2, 256));
+        parameters.add(new Parameter("quantization level Blue", 2, 256));
     }
 
     private int[] thresholdMap(int threshold){

@@ -17,7 +17,9 @@ public class MenuCreator {
     private Negative negative  = new Negative();
     private GammaCorrection gamma = new GammaCorrection();
     private HighlightBorderRoberts highlightBorderRoberts = new HighlightBorderRoberts();
+    private HighlightBorderSobel highlightBorderSobel = new HighlightBorderSobel();
     private Dither dither1 = new Dither();
+    private OrderedDitheringM ditheringM = new OrderedDitheringM();
     private FloydSteinberg floydSteinberg1 = new FloydSteinberg();
     private Embossing embossing = new Embossing();
     private GaussianBlur gaussianBlur = new GaussianBlur();
@@ -123,9 +125,33 @@ public class MenuCreator {
                     }
                 });
 
+        JRadioButtonMenuItem highlightBorderSobelFilter = componentCreator.createRadioButtonMenuItem("highlight border Sobel filter", "apply highlight border filter using the Sobel operator", menuGroupFilter, filter);
+        JToggleButton toolBarHighlightBorderSobelFilter = componentCreator.createJToggleButton("apply highlight border filter using the Sobel operator", "src/main/resources/highlightSobelFilter.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(highlightBorderSobelFilter, toolBarHighlightBorderSobelFilter);
+
+        componentCreator.setAction(highlightBorderSobelFilter, toolBarHighlightBorderSobelFilter,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(highlightBorderSobel, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem ditherM = componentCreator.createRadioButtonMenuItem("OD dither Margo", "OD dither Margo", menuGroupFilter, filter);
+        JToggleButton toolBarDitherM = componentCreator.createJToggleButton("OD dither Margo", "src/main/resources/dither.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(ditherM, toolBarDitherM);
+
+        componentCreator.setAction(ditherM, toolBarDitherM,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(ditheringM, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
         JRadioButtonMenuItem itemDither1 = componentCreator.createRadioButtonMenuItem("OD dither Anna", "OD dither Anna", menuGroupFilter, filter);
         JToggleButton toolBarDither1 = componentCreator.createJToggleButton("OD dither Anna", "src/main/resources/dither.png", toolBarGroupFilter);
-        componentCreator.syncToolBarAndMenu(itemDither1, toolBarInvertFilter);
+        componentCreator.syncToolBarAndMenu(itemDither1, toolBarDither1);
 
         componentCreator.setAction(itemDither1, toolBarDither1,
                 new ActionListener() {
