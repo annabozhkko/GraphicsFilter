@@ -17,6 +17,11 @@ public class MenuCreator {
     private Negative negative  = new Negative();
     private GammaCorrection gamma = new GammaCorrection();
     private HighlightBorder highlightBorder = new HighlightBorder();
+    private Dither dither1 = new Dither();
+    private FloydSteinberg floydSteinberg1 = new FloydSteinberg();
+    private Embossing embossing = new Embossing();
+    private GaussianBlur gaussianBlur = new GaussianBlur();
+    private Watercolorization watercolorization = new Watercolorization();
 
     public MenuCreator(MainFrame frame) {
         mainFrame = frame;
@@ -114,6 +119,65 @@ public class MenuCreator {
                     }
                 });
 
+        JRadioButtonMenuItem itemDither1 = componentCreator.createRadioButtonMenuItem("OD dither Anna", "OD dither Anna", menuGroupFilter, filter);
+        JToggleButton toolBarDither1 = componentCreator.createJToggleButton("OD dither Anna", "src/main/resources/dither.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemDither1, toolBarInvertFilter);
+
+        componentCreator.setAction(itemDither1, toolBarDither1,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(dither1, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem itemFloydSteinberg1 = componentCreator.createRadioButtonMenuItem("FS dither Anna", "FS dither Anna", menuGroupFilter, filter);
+        JToggleButton toolBarFloydSteinberg1 = componentCreator.createJToggleButton("FS dither Anna", "src/main/resources/dither.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemFloydSteinberg1, toolBarFloydSteinberg1);
+
+        componentCreator.setAction(itemFloydSteinberg1, toolBarFloydSteinberg1,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(floydSteinberg1, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem itemEmbossing = componentCreator.createRadioButtonMenuItem("Embossing", "Embossing", menuGroupFilter, filter);
+        JToggleButton toolBarEmbossing = componentCreator.createJToggleButton("Embossing", "src/main/resources/embossing.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemEmbossing, toolBarEmbossing);
+
+        componentCreator.setAction(itemEmbossing, toolBarEmbossing,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(embossing, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem itemBlur = componentCreator.createRadioButtonMenuItem("Gaussian blur", "Gaussian blur", menuGroupFilter, filter);
+        JToggleButton toolBarBlur = componentCreator.createJToggleButton("Gaussian blur", "src/main/resources/blur.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemBlur, toolBarBlur);
+
+        componentCreator.setAction(itemBlur, toolBarBlur,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(gaussianBlur, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem itemWatercolorization = componentCreator.createRadioButtonMenuItem("Water-colorization", "Water-colorization", menuGroupFilter, filter);
+        JToggleButton toolBarWatercolorization = componentCreator.createJToggleButton("Water-colorization", "src/main/resources/watercolorization.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemWatercolorization, toolBarWatercolorization);
+
+        componentCreator.setAction(itemWatercolorization, toolBarWatercolorization,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(watercolorization, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
 
         JMenuItem regime = componentCreator.createJMenuItem("Fit to screen", "Fit to screen", "src/main/resources/regime.png", file);
         JButton toolBarRegime = componentCreator.createJButton("Fit to screen", "src/main/resources/regime.png");

@@ -6,9 +6,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class Embossing{
-  //  @Override
-    public void execute(BufferedImage image){
+public class Embossing implements Filter{
+     @Override
+    public BufferedImage execute(BufferedImage image){
         int [][]matrix = new int[][]{{0, 1, 0}, {-1, 0, 1}, {0, -1, 0}};
         BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
@@ -34,12 +34,10 @@ public class Embossing{
             }
         }
 
-        Graphics2D g = image.createGraphics();
-        g.drawImage(newImage, 0, 0,  image.getWidth(), image.getHeight(),null);
-
+        return newImage;
     }
 
-  //  @Override
+    @Override
     public List<Parameter> getParameters() {
         return null;
     }

@@ -7,12 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Аня
-public class Dither{
+public class Dither implements Filter{
     private List<Parameter> parameters = new ArrayList<>();
     private ArrayList<Integer> palette = new ArrayList<>();
 
-    //@Override
-    public void execute(BufferedImage image) {
+    public Dither(){
+        parameters.add(new Parameter("Quantization number", 2, 128));
+    }
+
+    @Override
+    public BufferedImage execute(BufferedImage image) {
         for(int i = 0; i < 2; ++i){
             for(int j  = 0; j < 2; ++j){
                 for(int k = 0 ; k < 2; ++k){
@@ -26,6 +30,7 @@ public class Dither{
                 {3, 35, 11, 43, 1, 33, 9, 41}, {51, 19, 59, 27, 49, 17, 57, 25},
                 {15, 47, 7, 39, 13, 45, 5, 37}, {63, 31, 55, 23, 61, 29, 53, 21}};
 
+        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
         for(int x = 0; x < image.getWidth(); ++x) {
             for (int y = 0; y < image.getHeight(); ++y) {
@@ -51,9 +56,10 @@ public class Dither{
                 int newRGB = getNearestColor(newR, newG, newB);
 
                 //Color newColor = new Color((int)newR, (int)newG, (int)newB);
-                image.setRGB(x, y, newRGB);
+                newImage.setRGB(x, y, newRGB);
             }
         }
+        return newImage;
     }
 
     public double diff(double R1, double G1, double B1, double R2, double G2, double B2) {
@@ -80,7 +86,7 @@ public class Dither{
         return resultColor;
     }
 
-  //  @Override
+    @Override
     public List<Parameter> getParameters() {
         return parameters;
     }

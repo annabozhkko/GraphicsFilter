@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GaussianBlur {
+public class GaussianBlur implements Filter{
     private List<Parameter> parameters = new ArrayList<>();
     private double [][] matrix;
     private int sizeMatrix;
@@ -16,8 +16,8 @@ public class GaussianBlur {
         parameters.add(new Parameter("Size matrix", 1, 5));
     }
 
-   // @Override
-    public void execute(BufferedImage image){
+    @Override
+    public BufferedImage execute(BufferedImage image){
         sizeMatrix = (int)parameters.get(0).getValue();
         matrix = new double[sizeMatrix * 2 + 1][sizeMatrix * 2 + 1];
         createGaussian();
@@ -44,8 +44,7 @@ public class GaussianBlur {
             }
         }
 
-        Graphics2D g = image.createGraphics();
-        g.drawImage(newImage, 0, 0,  image.getWidth(), image.getHeight(),null);
+        return newImage;
     }
 
     private void createGaussian(){
@@ -56,7 +55,7 @@ public class GaussianBlur {
         }
     }
 
-   // @Override
+    @Override
     public List<Parameter> getParameters() {
         return parameters;
     }
