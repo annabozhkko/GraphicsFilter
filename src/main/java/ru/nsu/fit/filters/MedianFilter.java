@@ -30,6 +30,8 @@ public class MedianFilter implements Filter{
                             }
                         }
                     }
+                    // распараллелить
+                    // не создавать новые массивы
                     Arrays.sort(R);
                     Arrays.sort(G);
                     Arrays.sort(B);
