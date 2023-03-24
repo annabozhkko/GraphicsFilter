@@ -19,7 +19,7 @@ public class ParametersFrame {
         parameters = filter.getParameters();
 
         if (parameters == null){
-            gPanel.parameter = false;
+            gPanel.setParameter(false);
             gPanel.setFilter(filter.execute(originalImage));
             return;
         }
@@ -65,7 +65,7 @@ public class ParametersFrame {
         int option = JOptionPane.showOptionDialog(null, panel, "Enter the parameters",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
         if (option == JOptionPane.OK_OPTION) {
-            gPanel.parameter = true;
+            gPanel.setParameter(true);
             gPanel.setFilter(filter.execute(originalImage));
         }
     }
