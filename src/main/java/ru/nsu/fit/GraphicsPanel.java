@@ -24,9 +24,24 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         this.height = height;
         setPreferredSize(new Dimension(width, height));
         addMouseListener(this);
+        addComponentListener(new GraphicsPanel.ResizeListener());
+        setBorder(
+                BorderFactory.createCompoundBorder(
+                        new LineBorder(new Color(getBackground().getRGB()), 5),
+                        BorderFactory.createDashedBorder(Color.BLACK, 4, 4)
+                )
+        );
 
         // слежение за мышкой
         addMouseMotionListener(this);
+    }
+    
+    static class ResizeListener extends ComponentAdapter {
+        @Override
+        public void componentResized(ComponentEvent e) {
+           e.getComponent().setSize(new Dimension(e.getComponent().getWidth(), e.getComponent().getHeight()));
+            super.componentResized(e);
+        }
     }
 
     @Override
@@ -36,9 +51,10 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
 
         super.paintComponent(g);
         BufferedImage currentImg = (isFilter) ? filterImage : originalImage;
-        Graphics2D g2D = (Graphics2D) g;
-        g2D.drawImage(currentImg, 0, 0 , width, height, this);
-        g2D.dispose();
+        var w = g.getClipBounds().getSize().width;
+        var h = g.getClipBounds().getSize().height;
+        g.drawImage(currentImg, 6, 6, w + 6, h + 6, null);
+        setPreferredSize(new Dimension(w, h));
     }
 
     @Override
