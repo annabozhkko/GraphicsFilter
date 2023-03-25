@@ -7,6 +7,7 @@ import ru.nsu.fit.filters.*;
 import ru.nsu.fit.parametersFrame.ParametersFrame;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,6 +21,7 @@ public class MenuCreator {
     private HighlightBorderSobel highlightBorderSobel = new HighlightBorderSobel();
     private Dither dither1 = new Dither();
     private OrderedDitheringM ditheringM = new OrderedDitheringM();
+    private FSdithering FSditheringM = new FSdithering();
     private FloydSteinberg floydSteinberg1 = new FloydSteinberg();
     private Embossing embossing = new Embossing();
     private GaussianBlur gaussianBlur = new GaussianBlur();
@@ -89,6 +91,8 @@ public class MenuCreator {
         ButtonGroup menuGroupFilter = new ButtonGroup();
         ButtonGroup toolBarGroupFilter = new ButtonGroup();
 
+        mainFrame.toolBar.addSeparator(new Dimension(7,7));
+
         JRadioButtonMenuItem invertFilter = componentCreator.createRadioButtonMenuItem("invert filter", "apply negative filter", menuGroupFilter, filter);
         JToggleButton toolBarInvertFilter = componentCreator.createJToggleButton("apply negative filter", "src/main/resources/invertFilter.png", toolBarGroupFilter);
         componentCreator.syncToolBarAndMenu(invertFilter, toolBarInvertFilter);
@@ -148,6 +152,20 @@ public class MenuCreator {
                         new ParametersFrame(ditheringM, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
                     }
                 });
+
+        JRadioButtonMenuItem FSditherM = componentCreator.createRadioButtonMenuItem("FS dither Margo", "FS dither Margo", menuGroupFilter, filter);
+        JToggleButton toolBarFSDitherM = componentCreator.createJToggleButton("FS dither Margo", "src/main/resources/dither.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(FSditherM, toolBarFSDitherM);
+
+        componentCreator.setAction(FSditherM, toolBarFSDitherM,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(FSditheringM, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        mainFrame.toolBar.addSeparator(new Dimension(7,7));
 
         JRadioButtonMenuItem itemDither1 = componentCreator.createRadioButtonMenuItem("OD dither Anna", "OD dither Anna", menuGroupFilter, filter);
         JToggleButton toolBarDither1 = componentCreator.createJToggleButton("OD dither Anna", "src/main/resources/dither.png", toolBarGroupFilter);
@@ -209,6 +227,8 @@ public class MenuCreator {
                     }
                 });
 
+        mainFrame.toolBar.addSeparator(new Dimension(7,7));
+
         JRadioButtonMenuItem itemRotate = componentCreator.createRadioButtonMenuItem("Rotate", "Rotate", menuGroupFilter, filter);
         JToggleButton toolBarRotate = componentCreator.createJToggleButton("Rotate", "src/main/resources/rotate.png", toolBarGroupFilter);
         componentCreator.syncToolBarAndMenu(itemRotate, toolBarRotate);
@@ -257,6 +277,7 @@ public class MenuCreator {
                     }
                 });
 
+        mainFrame.toolBar.addSeparator(new Dimension(7,7));
 
         JMenuItem regime = componentCreator.createJMenuItem("Fit to screen", "Fit to screen", "src/main/resources/regime.png", file);
         JButton toolBarRegime = componentCreator.createJButton("Fit to screen", "src/main/resources/regime.png");
