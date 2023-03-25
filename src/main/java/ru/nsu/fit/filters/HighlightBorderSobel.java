@@ -31,27 +31,6 @@ public class HighlightBorderSobel implements Filter {
                     for (int m = 0; m < 3; m++) {
                         int x = i + k - 1;
                         int y = j + m - 1;
-                        /*if(y < 0)  // edge conditions
-                            y = (-1)*y + 1;
-                        else if(y >= img.getWidth())
-                            y = img.getWidth() - y;
-                        if(x < 0)  // edge conditions
-                            x = (-1)*x - 1;
-                        else if(x >= img.getHeight())
-                            x = img.getHeight() - x;
-
-                        int color = img.getRGB(x, y);
-                        redComponent = (color >> 16) & 0xff;
-                        greenComponent = (color >> 8) & 0xff;
-                        blueComponent = color & 0xff;
-                        gxRed += redComponent * sobelX[k * 3 + m];
-                        gyRed += redComponent * sobelY[k * 3 + m];
-                        gxGreen += greenComponent * sobelX[k * 3 + m];
-                        gyGreen += greenComponent * sobelY[k * 3 + m];
-                        gxBlue += blueComponent * sobelX[k * 3 + m];
-                        gyBlue += blueComponent * sobelY[k * 3 + m];*/
-                        // логически все правильно, роме того что границы пока что просто выкидываюютя
-                        // нужно проверить границы и позвоможно перевести картинку сначала в чб
                         if ((x >= 0 && x < img.getWidth()) && (y >= 0 && y < img.getHeight())){
                             int color = img.getRGB(x, y);
                             redComponent = (color >> 16) & 0xff;

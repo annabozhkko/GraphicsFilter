@@ -9,15 +9,15 @@ import java.util.List;
 public class OrderedDitheringM implements Filter {
     private List<Parameter> parameters = new ArrayList<>();
 
-    private int[] matrix_2 = {0, 2,
+    private final int[] matrix_2 = {0, 2,
                               3, 1};
 
-    private int[] matrix_4 = {0, 8, 2, 10,
+    private final int[] matrix_4 = {0, 8, 2, 10,
                               12, 4, 14, 6,
                               3, 11, 1, 9,
                               15, 7, 13, 5};
 
-    private int[] matrix_8 = {0, 32, 8, 40, 2, 34, 10, 42,
+    private final int[] matrix_8 = {0, 32, 8, 40, 2, 34, 10, 42,
                               48, 16, 56, 24, 50, 18, 58, 26,
                               12, 44, 4, 36, 14, 46, 6, 38,
                               60, 28, 52, 20, 62, 30, 54, 22,
@@ -26,7 +26,7 @@ public class OrderedDitheringM implements Filter {
                               15, 47, 7, 39, 13, 45, 5, 37,
                               63, 31, 55, 23, 61, 29, 53, 21};
 
-    private int[] matrix_16 = {0, 192, 48, 240, 12, 204, 60, 252, 3, 195, 51, 243, 15, 207, 63, 255,
+    private final int[] matrix_16 = {0, 192, 48, 240, 12, 204, 60, 252, 3, 195, 51, 243, 15, 207, 63, 255,
                               128, 64, 176, 112, 140, 76, 188, 124, 131, 67, 179, 115, 143, 79, 191, 127,
                               32, 224, 16, 208, 44, 236, 28, 220, 35, 227, 19, 211, 47, 239, 31, 223,
                               160, 96, 144, 80, 172, 108, 156, 92, 163, 99, 147, 83, 175, 111, 159, 9,
@@ -50,17 +50,6 @@ public class OrderedDitheringM implements Filter {
         parameters.add(new Parameter("quantization level Blue", 2, 256));
     }
 
-    private int[] thresholdMap(int threshold){
-        if(2 >= threshold)
-            return matrix_2;
-        else if(4 >= threshold)
-            return matrix_4;
-        else if(8 >= threshold)
-            return matrix_8;
-        else
-            return matrix_16;
-    }
-
     @Override
     public BufferedImage execute(BufferedImage img) {
         BufferedImage ditherImg = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -73,9 +62,13 @@ public class OrderedDitheringM implements Filter {
         //мы будем искать в этой палитре ближайший цвет от полученного
         //....
         //выбираем матрицу для каждого цвета
-        int[]  thresholdMapRed = thresholdMap(256 / qLevelRed);
-        int[]  thresholdMapGreen = thresholdMap(256 / qLevelGreen);
-        int[]  thresholdMapBlue = thresholdMap(256 / qLevelBlue);
+        int[]  thresholdMapRed = getThresholdMap(256 / qLevelRed);
+        int[]  thresholdMapGreen = getThresholdMap(256 / qLevelGreen);
+        int[]  thresholdMapBlue = getThresholdMap(256 / qLevelBlue);
+        // 255 / n-1, где n число новых цветов - число квантования
+        int spreadSpaceRed = getSpreadSpace(qLevelRed);
+        int spreadSpaceGreen  = getSpreadSpace(qLevelGreen);
+        int spreadSpaceBlue = getSpreadSpace(qLevelBlue);
         for (int i = 0; i < img.getWidth(); i++){
             for (int j = 0; j < img.getHeight(); j++) {
                 int color = img.getRGB(i, j);
@@ -84,15 +77,46 @@ public class OrderedDitheringM implements Filter {
                 int greenComponent = (color >> 8) & 0xff;
                 int blueComponent = color & 0xff;
 
-                redComponent = (int)(redComponent + qLevelRed * (thresholdMapRed[i%thresholdMapRed.length * thresholdMapRed.length + j % thresholdMapRed.length] - 0.5));
-                greenComponent = (int)(greenComponent + qLevelGreen * (thresholdMapGreen[i%thresholdMapGreen.length * thresholdMapGreen.length + j % thresholdMapGreen.length] - 0.5));
-                blueComponent = (int)(blueComponent + qLevelBlue * (thresholdMapBlue[i%thresholdMapBlue.length * thresholdMapBlue.length + j % thresholdMapBlue.length] - 0.5));
+                int lengthThresholdMapRed =(int) Math.sqrt(thresholdMapRed.length);
+                int lengthThresholdMapGreen =(int) Math.sqrt(thresholdMapGreen.length);
+                int lengthThresholdMapBlue =(int) Math.sqrt(thresholdMapBlue.length);
+
+                redComponent = dithering(redComponent, i , j, spreadSpaceRed,thresholdMapRed,lengthThresholdMapRed);
+                blueComponent = dithering(blueComponent, i , j, spreadSpaceBlue,thresholdMapBlue,lengthThresholdMapBlue);
+                greenComponent = dithering(greenComponent, i , j, spreadSpaceGreen,thresholdMapGreen,lengthThresholdMapGreen);
 
                 int newColor = (alphaComponent << 24) | (redComponent << 16) | (greenComponent << 8) | blueComponent;
                 ditherImg.setRGB(i, j, newColor);
             }
         }
         return ditherImg;
+    }
+
+    private int getSpreadSpace(int qLevel){
+        return 256 / (qLevel - 1);
+    }
+
+    private int[] getThresholdMap(int threshold){
+        if(2*2 >= threshold)
+            return matrix_2;
+        else if(4*4 >= threshold)
+            return matrix_4;
+        else if(8*8 >= threshold)
+            return matrix_8;
+        else
+            return matrix_16;
+    }
+
+    private int normalization(int value) {
+        if (value > 255) {
+            return 255;
+        }
+        return Math.max(value, 0);
+    }
+
+    private int dithering(int color, int i , int j, int spreadSpace,int[] map, int lengthMap){
+        int resultColor = (int)(color + spreadSpace * (((double)map[(i%lengthMap) * lengthMap + j % lengthMap] / map.length) - 0.5));
+        return normalization((int) (Math.round((double) resultColor / spreadSpace) * spreadSpace));
     }
 
     @Override
