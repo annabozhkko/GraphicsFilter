@@ -2,14 +2,13 @@ package ru.nsu.fit.filters;
 
 import ru.nsu.fit.parametersFrame.Parameter;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class Embossing implements Filter{
-     @Override
-    public BufferedImage execute(BufferedImage image){
-        int [][]matrix = new int[][]{{0, 1, 0}, {-1, 0, 1}, {0, -1, 0}};
+public class Clarity implements Filter{
+    @Override
+    public BufferedImage execute(BufferedImage image) {
+        int [][]matrix = new int[][]{{-1, -1, -1}, {-1, 9, -1}, {-1, -1, -1}};
         BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
         for(int x = 0; x < image.getWidth(); ++x){
@@ -32,10 +31,6 @@ public class Embossing implements Filter{
                     }
                 }
 
-                sumR += 128;
-                sumG += 128;
-                sumB += 128;
-
                 sumR = Math.max(0, Math.min(sumR, 255));
                 sumG = Math.max(0, Math.min(sumG, 255));
                 sumB = Math.max(0, Math.min(sumB, 255));
@@ -43,7 +38,6 @@ public class Embossing implements Filter{
                 newImage.setRGB(x, y, (255 << 24) | ((int)sumR << 16) | ((int)sumG << 8) | (int)sumB);
             }
         }
-
         return newImage;
     }
 

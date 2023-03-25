@@ -145,8 +145,6 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
 
     public void setRegimeInterpolation(Object regimeInterpolation) {
         this.regimeInterpolation = regimeInterpolation;
-        //RenderingHints.VALUE_INTERPOLATION_BILINEAR
-        //RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
     }
 
     public void setImage(Image openImage){
@@ -154,6 +152,7 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         height = openImage.getHeight(this);
         realWidthImage = width;
         realHeightImage = height;
+        isRealRegime = true;
 
         BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         setPreferredSize(new Dimension(width, height));

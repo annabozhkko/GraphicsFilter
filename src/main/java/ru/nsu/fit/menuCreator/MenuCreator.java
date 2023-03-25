@@ -30,6 +30,7 @@ public class MenuCreator {
     private BlackWhite blackWhite = new BlackWhite();
     private SharpeningFilter sharpeningFilter = new SharpeningFilter();
     private RussiaFilter russiaFilter = new RussiaFilter();
+    private Clarity clarity = new Clarity();
 
     public MenuCreator(MainFrame frame) {
         mainFrame = frame;
@@ -224,6 +225,18 @@ public class MenuCreator {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         new ParametersFrame(watercolorization, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem itemClarity = componentCreator.createRadioButtonMenuItem("Clarity", "Clarity", menuGroupFilter, filter);
+        JToggleButton toolBarClarity = componentCreator.createJToggleButton("Clarity", "src/main/resources/clarity.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemClarity, toolBarClarity);
+
+        componentCreator.setAction(itemClarity, toolBarClarity,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(clarity, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
                     }
                 });
 

@@ -73,9 +73,9 @@ public class Dither implements Filter{
                 int G = (rgb >> 8) & 0xff;
                 int B =  rgb & 0xff;
 
-                double newR = R + (255. / (quantizationNumberRed - 1)) * (matrixRed[x % quantizationNumberRed][y % quantizationNumberRed] / 255 - 1./2);
-                double newG = G + (255. / (quantizationNumberGreen - 1)) * (matrixGreen[x % quantizationNumberGreen][y % quantizationNumberGreen] / 255 - 1./2);
-                double newB = B + (255. / (quantizationNumberBlue - 1)) * (matrixBlue[x % quantizationNumberBlue][y % quantizationNumberBlue] / 255 - 1./2);
+                double newR = R + (255. / (quantizationNumberRed - 1)) * (matrixRed[x % matrixRed.length][y % matrixRed.length] / 255.) - 1./2;
+                double newG = G + (255. / (quantizationNumberGreen - 1)) * (matrixGreen[x % matrixGreen.length][y % matrixGreen.length] / 255.) - 1./2;
+                double newB = B + (255. / (quantizationNumberBlue - 1)) * (matrixBlue[x % matrixBlue.length][y % matrixBlue.length] / 255.) - 1./2;
 
                 int newRGB = getNearestColor(newR, newG, newB);
 
@@ -141,7 +141,7 @@ public class Dither implements Filter{
     private double[][] getMatrix(int quantizationNumber){
         for(int i = 1; i <= 4; ++i){
             int sizeMatrix = (int)Math.pow(2, i);
-            if(sizeMatrix * sizeMatrix >= 256 / (quantizationNumber - 1)){  //36
+            if(sizeMatrix * sizeMatrix >= 256 / (quantizationNumber - 1)){
                 return matrices[i - 1];
             }
         }

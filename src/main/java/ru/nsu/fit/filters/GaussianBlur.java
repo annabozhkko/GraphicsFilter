@@ -53,13 +53,16 @@ public class GaussianBlur implements Filter{
                 double sumB = 0;
                 for(int u = -r; u <= r; ++u){
                     for(int v = -r; v <= r; ++v){
-                        // края !!!
+                        int rgb;
                         if(x + u >= 0 && x + u < image.getWidth() && y + v >= 0 && y + v < image.getHeight()) {
-                            int rgb = image.getRGB(x + u, y + v);
-                            sumR += coef * matrix[u + r][v + r] * ((rgb >> 16) & 0xff);
-                            sumG += coef * matrix[u + r][v + r] * ((rgb >> 8) & 0xff);
-                            sumB += coef * matrix[u + r][v + r] * (rgb & 0xff);
+                            rgb = image.getRGB(x + u, y + v);
                         }
+                        else {
+                            rgb = image.getRGB(x, y);
+                        }
+                        sumR += coef * matrix[u + r][v + r] * ((rgb >> 16) & 0xff);
+                        sumG += coef * matrix[u + r][v + r] * ((rgb >> 8) & 0xff);
+                        sumB += coef * matrix[u + r][v + r] * (rgb & 0xff);
                     }
                 }
                 newImage.setRGB(x, y, (255 << 24) | ((int)sumR << 16) | ((int)sumG << 8) | (int)sumB);
