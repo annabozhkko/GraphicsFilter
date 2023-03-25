@@ -13,26 +13,14 @@ public class FloydSteinberg implements Filter{
     private ArrayList<Integer> palette = new ArrayList<>();
 
     public FloydSteinberg(){
-        parameters.add(new Parameter("Quantization number", 2, 128));
+        parameters.add(new Parameter("Quantization number red", 2, 128));
+        parameters.add(new Parameter("Quantization number green", 2, 128));
+        parameters.add(new Parameter("Quantization number blue", 2, 128));
     }
 
     @Override
     public BufferedImage execute(BufferedImage image) {
-        int quantizationNumber = (int)parameters.get(0).getValue();
-        int[] values = new int[quantizationNumber];
-        int step = 256 / (quantizationNumber - 1);
-        //int[] values = {0, 128, 255};
-        for(int i = 0; i < quantizationNumber; ++i){
-            values[i] = i * step;
-        }
-        //System
-        for(int i : values){
-            for(int j : values){
-                for(int k : values){
-                    palette.add((255 << 24) | (i << 16) | (j << 8) | k );
-                }
-            }
-        }
+        createPalette();
 
         int width = image.getWidth();
         int height = image.getHeight();
@@ -114,6 +102,37 @@ public class FloydSteinberg implements Filter{
         return resultColor;
     }
 
+    private void createPalette(){
+        palette.clear();
+        int quantizationNumberRed = (int)parameters.get(0).getValue();
+        int[] valuesRed = new int[quantizationNumberRed];
+        int step = 255 / (quantizationNumberRed - 1);
+        for(int i = 0; i < quantizationNumberRed; ++i){
+            valuesRed[i] = i * step;
+        }
+
+        int quantizationNumberGreen = (int)parameters.get(1).getValue();
+        int[] valuesGreen = new int[quantizationNumberGreen];
+        step = 255 / (quantizationNumberGreen - 1);
+        for(int i = 0; i < quantizationNumberGreen; ++i){
+            valuesGreen[i] = i * step;
+        }
+
+        int quantizationNumberBlue = (int)parameters.get(2).getValue();
+        int[] valuesBlue = new int[quantizationNumberBlue];
+        step = 255 / (quantizationNumberBlue - 1);
+        for(int i = 0; i < quantizationNumberBlue; ++i){
+            valuesBlue[i] = i * step;
+        }
+
+        for(int i : valuesRed){
+            for(int j : valuesGreen){
+                for(int k : valuesBlue){
+                    palette.add((255 << 24) | (i << 16) | (j << 8) | k );
+                }
+            }
+        }
+    }
 
     @Override
     public List<Parameter> getParameters() {

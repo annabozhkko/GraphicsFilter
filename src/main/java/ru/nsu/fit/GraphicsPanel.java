@@ -54,10 +54,10 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
 
         super.paintComponent(g);
         BufferedImage currentImg = (isFilter) ? filterImage : originalImage;
-        var w = g.getClipBounds().getSize().width;
-        var h = g.getClipBounds().getSize().height;
+       // var w = g.getClipBounds().getSize().width;
+      //  var h = g.getClipBounds().getSize().height;
         g.drawImage(currentImg, 6, 6, width, height, null);
-        setPreferredSize(new Dimension(w, h));
+        //setPreferredSize(new Dimension(w, h));
     }
 
     @Override

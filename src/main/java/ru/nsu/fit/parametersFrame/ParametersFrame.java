@@ -13,7 +13,6 @@ import java.util.List;
 public class ParametersFrame {
     private List<Parameter> parameters;
     private JPanel panel = new JPanel();
-    private BufferedImage filterImage;
 
     public ParametersFrame(Filter filter, BufferedImage originalImage, GraphicsPanel gPanel){
         parameters = filter.getParameters();
@@ -29,6 +28,8 @@ public class ParametersFrame {
             JPanel oneLineParameters = new JPanel(new FlowLayout());
             JTextField editBox = new JTextField();
             JSlider slider = new JSlider((int)parameter.getMin(),(int) parameter.getMax());
+            slider.setMinorTickSpacing((int)parameter.getStep());
+            slider.setSnapToTicks(true);
 
             editBox.setPreferredSize(new Dimension(100, 30));
 
@@ -37,16 +38,9 @@ public class ParametersFrame {
                 public void keyReleased(KeyEvent e) {
                     if(editBox.getText().equals(""))
                         return;
-                    int value = Integer.parseInt(editBox.getText());
-                    // проверка
-                    /*if(value < 0 || value > 240){
-                        new ErrorFrame();
-                    }
-                    else {
-                        slider.setValue(value);
-                    }
-                     */
-                    slider.setValue(value);
+                   // int value = Integer.parseInt(editBox.getText());
+                    double value = Double.parseDouble(editBox.getText());
+                    slider.setValue((int)value);
                     parameter.setValue(value);
                 }
             });

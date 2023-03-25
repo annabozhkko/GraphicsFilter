@@ -121,7 +121,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                         new ParametersFrame(highlightBorderRoberts, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(highlightBorderRoberts, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
                     }
                 });
 
@@ -210,7 +210,7 @@ public class MenuCreator {
                 });
 
         JRadioButtonMenuItem itemRotate = componentCreator.createRadioButtonMenuItem("Rotate", "Rotate", menuGroupFilter, filter);
-        JToggleButton toolBarRotate = componentCreator.createJToggleButton("Rotate", "src/main/resources/watercolorization.png", toolBarGroupFilter);
+        JToggleButton toolBarRotate = componentCreator.createJToggleButton("Rotate", "src/main/resources/rotate.png", toolBarGroupFilter);
         componentCreator.syncToolBarAndMenu(itemRotate, toolBarRotate);
 
         componentCreator.setAction(itemRotate, toolBarRotate,
@@ -218,6 +218,42 @@ public class MenuCreator {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         new ParametersFrame(rotate, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem itemBlackWhite = componentCreator.createRadioButtonMenuItem("Black white", "Black white", menuGroupFilter, filter);
+        JToggleButton toolBarBlackWhite = componentCreator.createJToggleButton("Black white", "src/main/resources/blackwhite.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemBlackWhite, toolBarBlackWhite);
+
+        componentCreator.setAction(itemBlackWhite, toolBarBlackWhite,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(blackWhite, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem itemSharpening = componentCreator.createRadioButtonMenuItem("Sharpening", "Sharpening", menuGroupFilter, filter);
+        JToggleButton toolBarSharpening = componentCreator.createJToggleButton("Sharpening", "src/main/resources/sharpening.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemSharpening, toolBarSharpening);
+
+        componentCreator.setAction(itemSharpening, toolBarSharpening,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(sharpeningFilter, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem itemRussia = componentCreator.createRadioButtonMenuItem("Russia", "Russia", menuGroupFilter, filter);
+        JToggleButton toolBarRussia = componentCreator.createJToggleButton("Russia", "src/main/resources/russian.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemRussia, toolBarRussia);
+
+        componentCreator.setAction(itemRussia, toolBarRussia,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(russiaFilter, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
                     }
                 });
 

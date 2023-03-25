@@ -8,7 +8,7 @@ import java.util.List;
 public class Watercolorization implements Filter{
     @Override
     public BufferedImage execute(BufferedImage image) {
-        MedianFilter medianFilter = new MedianFilter();
+        MedianFilter medianFilter = new MedianFilter(5);
         SharpeningFilter sharpeningFilter = new SharpeningFilter();
 
         BufferedImage newImage = medianFilter.execute(image);
