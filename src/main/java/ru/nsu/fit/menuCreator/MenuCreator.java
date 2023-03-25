@@ -210,7 +210,7 @@ public class MenuCreator {
                 });
 
         JRadioButtonMenuItem itemRotate = componentCreator.createRadioButtonMenuItem("Rotate", "Rotate", menuGroupFilter, filter);
-        JToggleButton toolBarRotate = componentCreator.createJToggleButton("Rotate", "src/main/resources/watercolorization.png", toolBarGroupFilter);
+        JToggleButton toolBarRotate = componentCreator.createJToggleButton("Rotate", "src/main/resources/rotate.png", toolBarGroupFilter);
         componentCreator.syncToolBarAndMenu(itemRotate, toolBarRotate);
 
         componentCreator.setAction(itemRotate, toolBarRotate,

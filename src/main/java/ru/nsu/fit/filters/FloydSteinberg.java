@@ -103,6 +103,7 @@ public class FloydSteinberg implements Filter{
     }
 
     private void createPalette(){
+        palette.clear();
         int quantizationNumberRed = (int)parameters.get(0).getValue();
         int[] valuesRed = new int[quantizationNumberRed];
         int step = 255 / (quantizationNumberRed - 1);

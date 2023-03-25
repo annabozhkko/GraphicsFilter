@@ -10,6 +10,7 @@ import java.util.List;
 public class Dither implements Filter{
     private List<Parameter> parameters = new ArrayList<>();
     private ArrayList<Integer> palette = new ArrayList<>();
+    private int quantizationNumberRed, quantizationNumberGreen, quantizationNumberBlue;
 
     private double[][][] matrices = {{
         {0, 2}, {3, 1}},
@@ -53,15 +54,18 @@ public class Dither implements Filter{
 
     @Override
     public BufferedImage execute(BufferedImage image) {
+        quantizationNumberRed = (int)parameters.get(0).getValue();
+        quantizationNumberGreen = (int)parameters.get(1).getValue();
+        quantizationNumberBlue = (int)parameters.get(2).getValue();
+
         createPalette();
 
-        double[][] matrixRed = getMatrix((int)parameters.get(0).getValue());
-        double[][] matrixGreen = getMatrix((int)parameters.get(1).getValue());
-        double[][] matrixBlue = getMatrix((int)parameters.get(2).getValue());
+        double[][] matrixRed = getMatrix(quantizationNumberRed);
+        double[][] matrixGreen = getMatrix(quantizationNumberGreen);
+        double[][] matrixBlue = getMatrix(quantizationNumberBlue);
 
         BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
-        // матрица нормированная
         for(int x = 0; x < image.getWidth(); ++x) {
             for (int y = 0; y < image.getHeight(); ++y) {
                 int rgb = image.getRGB(x, y);
@@ -69,14 +73,9 @@ public class Dither implements Filter{
                 int G = (rgb >> 8) & 0xff;
                 int B =  rgb & 0xff;
 
-                int i = x % 8;
-                int j = y % 8;
-
-                double r = 1;
-
-                double newR = R + r * (matrixRed[i][j] - 1./2);
-                double newG = G + r * (matrixGreen[i][j] - 1./2);
-                double newB = B + r * (matrixBlue[i][j] - 1./2);
+                double newR = R + (255. / (quantizationNumberRed - 1)) * (matrixRed[x % quantizationNumberRed][y % quantizationNumberRed] / 255 - 1./2);
+                double newG = G + (255. / (quantizationNumberGreen - 1)) * (matrixGreen[x % quantizationNumberGreen][y % quantizationNumberGreen] / 255 - 1./2);
+                double newB = B + (255. / (quantizationNumberBlue - 1)) * (matrixBlue[x % quantizationNumberBlue][y % quantizationNumberBlue] / 255 - 1./2);
 
                 int newRGB = getNearestColor(newR, newG, newB);
 
@@ -111,29 +110,25 @@ public class Dither implements Filter{
     }
 
     private void createPalette(){
-        int quantizationNumberRed = (int)parameters.get(0).getValue();
+        palette.clear();
         int[] valuesRed = new int[quantizationNumberRed];
         int step = 255 / (quantizationNumberRed - 1);
         for(int i = 0; i < quantizationNumberRed; ++i){
             valuesRed[i] = i * step;
         }
 
-        int quantizationNumberGreen = (int)parameters.get(1).getValue();
         int[] valuesGreen = new int[quantizationNumberGreen];
         step = 255 / (quantizationNumberGreen - 1);
         for(int i = 0; i < quantizationNumberGreen; ++i){
             valuesGreen[i] = i * step;
         }
 
-        int quantizationNumberBlue = (int)parameters.get(2).getValue();
         int[] valuesBlue = new int[quantizationNumberBlue];
         step = 255 / (quantizationNumberBlue - 1);
         for(int i = 0; i < quantizationNumberBlue; ++i){
             valuesBlue[i] = i * step;
         }
 
-        System.out.println(quantizationNumberRed + " " + quantizationNumberGreen + " " +
-                quantizationNumberBlue);
         for(int i : valuesRed){
             for(int j : valuesGreen){
                 for(int k : valuesBlue){
@@ -146,7 +141,7 @@ public class Dither implements Filter{
     private double[][] getMatrix(int quantizationNumber){
         for(int i = 1; i <= 4; ++i){
             int sizeMatrix = (int)Math.pow(2, i);
-            if(sizeMatrix * sizeMatrix >= 256 / (quantizationNumber - 1)){
+            if(sizeMatrix * sizeMatrix >= 256 / (quantizationNumber - 1)){  //36
                 return matrices[i - 1];
             }
         }
