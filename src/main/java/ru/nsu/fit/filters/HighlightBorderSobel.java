@@ -31,18 +31,20 @@ public class HighlightBorderSobel implements Filter {
                     for (int m = 0; m < 3; m++) {
                         int x = i + k - 1;
                         int y = j + m - 1;
-                        if ((x >= 0 && x < img.getWidth()) && (y >= 0 && y < img.getHeight())){
-                            int color = img.getRGB(x, y);
-                            redComponent = (color >> 16) & 0xff;
-                            greenComponent = (color >> 8) & 0xff;
-                            blueComponent = color & 0xff;
-                            gxRed += redComponent * sobelX[k * 3 + m];
-                            gyRed += redComponent * sobelY[k * 3 + m];
-                            gxGreen += greenComponent * sobelX[k * 3 + m];
-                            gyGreen += greenComponent * sobelY[k * 3 + m];
-                            gxBlue += blueComponent * sobelX[k * 3 + m];
-                            gyBlue += blueComponent * sobelY[k * 3 + m];
-                        }
+                        int color;
+                        if ((x >= 0 && x < img.getWidth()) && (y >= 0 && y < img.getHeight()))
+                            color = img.getRGB(x, y);
+                        else
+                            color = img.getRGB(i,j);
+                        redComponent = (color >> 16) & 0xff;
+                        greenComponent = (color >> 8) & 0xff;
+                        blueComponent = color & 0xff;
+                        gxRed += redComponent * sobelX[k * 3 + m];
+                        gyRed += redComponent * sobelY[k * 3 + m];
+                        gxGreen += greenComponent * sobelX[k * 3 + m];
+                        gyGreen += greenComponent * sobelY[k * 3 + m];
+                        gxBlue += blueComponent * sobelX[k * 3 + m];
+                        gyBlue += blueComponent * sobelY[k * 3 + m];
                     }
                 }
                 redComponent = (Math.abs(gxRed) + Math.abs(gyRed) > binarizationParameter) ? 255 : 0;

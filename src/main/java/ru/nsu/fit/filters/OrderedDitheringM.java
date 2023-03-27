@@ -45,9 +45,9 @@ public class OrderedDitheringM implements Filter {
 
 
     public OrderedDitheringM() {
-        parameters.add(new Parameter("quantization level Red", 2, 256));
-        parameters.add(new Parameter("quantization level Green", 2, 256));
-        parameters.add(new Parameter("quantization level Blue", 2, 256));
+        parameters.add(new Parameter("quantization level Red", 2, 128));
+        parameters.add(new Parameter("quantization level Green", 2, 128));
+        parameters.add(new Parameter("quantization level Blue", 2, 128));
     }
 
     @Override
@@ -114,7 +114,7 @@ public class OrderedDitheringM implements Filter {
         return Math.max(value, 0);
     }
 
-    private int dithering(int color, int i , int j, int spreadSpace,int[] map, int lengthMap){
+    private int dithering(int color, int i , int j, int spreadSpace, int[] map, int lengthMap){
         int resultColor = (int)(color + spreadSpace * (((double)map[(i%lengthMap) * lengthMap + j % lengthMap] / map.length) - 0.5));
         return normalization((int) (Math.round((double) resultColor / spreadSpace) * spreadSpace));
     }

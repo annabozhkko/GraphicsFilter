@@ -30,18 +30,20 @@ public class HighlightBorderRoberts implements  Filter{
                     for (int m = 0; m < 2; m++) {
                         int x = i + k - 1;
                         int y = j + m - 1;
-                        if ((x >= 0 && x < img.getWidth()) && (y >= 0 && y < img.getHeight())) {
-                            int color = img.getRGB(x, y);
-                            redComponent = (color >> 16) & 0xff;
-                            greenComponent = (color >> 8) & 0xff;
-                            blueComponent = color & 0xff;
-                            gxRed += redComponent * robertsX[k * 2 + m];
-                            gyRed += redComponent * robertsY[k * 2 + m];
-                            gxGreen += greenComponent * robertsX[k * 2 + m];
-                            gyGreen += greenComponent * robertsY[k * 2 + m];
-                            gxBlue += blueComponent * robertsX[k * 2 + m];
-                            gyBlue += blueComponent * robertsY[k * 2 + m];
-                        }
+                        int color;
+                        if ((x >= 0 && x < img.getWidth()) && (y >= 0 && y < img.getHeight()))
+                            color = img.getRGB(x, y);
+                        else
+                            color = img.getRGB(i,j);
+                        redComponent = (color >> 16) & 0xff;
+                        greenComponent = (color >> 8) & 0xff;
+                        blueComponent = color & 0xff;
+                        gxRed += redComponent * robertsX[k * 2 + m];
+                        gyRed += redComponent * robertsY[k * 2 + m];
+                        gxGreen += greenComponent * robertsX[k * 2 + m];
+                        gyGreen += greenComponent * robertsY[k * 2 + m];
+                        gxBlue += blueComponent * robertsX[k * 2 + m];
+                        gyBlue += blueComponent * robertsY[k * 2 + m];
                     }
                 }
                 redComponent = (Math.abs(gxRed) + Math.abs(gyRed) > binarizationParameter) ? 255 : 0;

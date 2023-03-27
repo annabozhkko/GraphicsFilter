@@ -21,7 +21,8 @@ public class MenuCreator {
     private HighlightBorderSobel highlightBorderSobel = new HighlightBorderSobel();
     private Dither dither1 = new Dither();
     private OrderedDitheringM ditheringM = new OrderedDitheringM();
-    private FSdithering FSditheringM = new FSdithering();
+    private FSditheringM FSditheringM = new FSditheringM();
+    private GlassFilterM glassFilter = new GlassFilterM();
     private FloydSteinberg floydSteinberg1 = new FloydSteinberg();
     private Embossing embossing = new Embossing();
     private GaussianBlur gaussianBlur = new GaussianBlur();
@@ -163,6 +164,18 @@ public class MenuCreator {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         new ParametersFrame(FSditheringM, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                    }
+                });
+
+        JRadioButtonMenuItem menuGlassFilter = componentCreator.createRadioButtonMenuItem("Glass filter", "Glass filter", menuGroupFilter, filter);
+        JToggleButton toolBarGlassFilter = componentCreator.createJToggleButton("Glass filter", "src/main/resources/glassFilter.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(menuGlassFilter, toolBarGlassFilter);
+
+        componentCreator.setAction(menuGlassFilter, toolBarGlassFilter,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ParametersFrame(glassFilter, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
                     }
                 });
 
