@@ -7,11 +7,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FSditheringM implements Filter {
+public class FSdithering implements Filter {
     private List<Parameter> parameters = new ArrayList<>();
     private ArrayList<Integer> palette = new ArrayList<>();
 
-    public FSditheringM() {
+    public FSdithering() {
         parameters.add(new Parameter("quantization level Red", 2, 128));
         parameters.add(new Parameter("quantization level Green", 2, 128));
         parameters.add(new Parameter("quantization level Blue", 2, 128));

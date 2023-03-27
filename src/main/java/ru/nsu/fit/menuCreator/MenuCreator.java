@@ -21,7 +21,7 @@ public class MenuCreator {
     private HighlightBorderSobel highlightBorderSobel = new HighlightBorderSobel();
     private Dither dither1 = new Dither();
     private OrderedDitheringM ditheringM = new OrderedDitheringM();
-    private FSditheringM FSditheringM = new FSditheringM();
+    private FSdithering FSditheringM = new FSdithering();
     private GlassFilterM glassFilter = new GlassFilterM();
     private FloydSteinberg floydSteinberg1 = new FloydSteinberg();
     private Embossing embossing = new Embossing();
