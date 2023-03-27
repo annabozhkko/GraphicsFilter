@@ -73,9 +73,12 @@ public class Dither implements Filter{
                 int G = (rgb >> 8) & 0xff;
                 int B =  rgb & 0xff;
 
-                double newR = R + (255. / (quantizationNumberRed - 1)) * (matrixRed[x % matrixRed.length][y % matrixRed.length] / 255.) - 1./2;
-                double newG = G + (255. / (quantizationNumberGreen - 1)) * (matrixGreen[x % matrixGreen.length][y % matrixGreen.length] / 255.) - 1./2;
-                double newB = B + (255. / (quantizationNumberBlue - 1)) * (matrixBlue[x % matrixBlue.length][y % matrixBlue.length] / 255.) - 1./2;
+                double newR = R + (255. / (quantizationNumberRed - 1)) * (matrixRed[x % matrixRed.length][y % matrixRed.length] /
+                        (matrixRed.length * matrixRed.length) - 1./2);
+                double newG = G + (255. / (quantizationNumberGreen - 1)) * (matrixGreen[x % matrixGreen.length][y % matrixGreen.length] /
+                        (matrixGreen.length * matrixGreen.length) - 1./2);
+                double newB = B + (255. / (quantizationNumberBlue - 1)) * (matrixBlue[x % matrixBlue.length][y % matrixBlue.length] /
+                        (matrixBlue.length * matrixBlue.length) - 1./2);
 
                 int newRGB = getNearestColor(newR, newG, newB);
 
