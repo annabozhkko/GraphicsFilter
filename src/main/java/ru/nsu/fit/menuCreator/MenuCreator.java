@@ -31,7 +31,7 @@ public class MenuCreator {
     private BlackWhite blackWhite = new BlackWhite();
     private SharpeningFilter sharpeningFilter = new SharpeningFilter();
     private RussiaFilter russiaFilter = new RussiaFilter();
-    private Clarity clarity = new Clarity();
+    private VignetteFilter vignetteFilter = new VignetteFilter();
 
     public MenuCreator(MainFrame frame) {
         mainFrame = frame;
@@ -241,15 +241,15 @@ public class MenuCreator {
                     }
                 });
 
-        JRadioButtonMenuItem itemClarity = componentCreator.createRadioButtonMenuItem("Clarity", "Clarity", menuGroupFilter, filter);
-        JToggleButton toolBarClarity = componentCreator.createJToggleButton("Clarity", "src/main/resources/clarity.png", toolBarGroupFilter);
-        componentCreator.syncToolBarAndMenu(itemClarity, toolBarClarity);
+        JRadioButtonMenuItem itemVignetteFilter = componentCreator.createRadioButtonMenuItem("Vignette", "Vignette", menuGroupFilter, filter);
+        JToggleButton toolBarVignetteFilter = componentCreator.createJToggleButton("Vignette", "src/main/resources/vignette.png", toolBarGroupFilter);
+        componentCreator.syncToolBarAndMenu(itemVignetteFilter, toolBarVignetteFilter);
 
-        componentCreator.setAction(itemClarity, toolBarClarity,
+        componentCreator.setAction(itemVignetteFilter, toolBarVignetteFilter,
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(clarity, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(vignetteFilter, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
                     }
                 });
 
