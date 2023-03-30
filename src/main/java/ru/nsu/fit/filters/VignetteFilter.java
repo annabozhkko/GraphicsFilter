@@ -21,7 +21,7 @@ public class VignetteFilter implements Filter{
         int centerY = height / 2;
 
         double maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
-        double strength = parameters.get(0).getValue(); // 0.7
+        double strength = parameters.get(0).getValue();
 
         BufferedImage filteredImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 

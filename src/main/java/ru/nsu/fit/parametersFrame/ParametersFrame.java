@@ -20,7 +20,9 @@ public class ParametersFrame {
 
         if (parameters == null){
             gPanel.setParameter(false);
+            gPanel.setWaitCursor();
             gPanel.setFilter(filter.execute(originalImage));
+            gPanel.setDefaultCursor();
             return;
         }
 
@@ -63,7 +65,9 @@ public class ParametersFrame {
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
         if (option == JOptionPane.OK_OPTION) {
             gPanel.setParameter(true);
+            gPanel.setWaitCursor();
             gPanel.setFilter(filter.execute(originalImage));
+            gPanel.setDefaultCursor();
         }
     }
 }

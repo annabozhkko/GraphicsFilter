@@ -221,4 +221,12 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         isRealRegime = !isRealRegime;
         repaint();
     }
+
+    public void setWaitCursor(){
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    }
+
+    public void setDefaultCursor(){
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }
 }
