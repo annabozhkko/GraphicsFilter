@@ -30,6 +30,7 @@ public class VignetteFilter implements Filter{
                 int rgb = image.getRGB(x, y);
                 int r = (rgb >> 16) & 0xFF;
                 int g = (rgb >> 8) & 0xFF;
+
                 int b = rgb & 0xFF;
 
                 double distance = Math.sqrt((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY));

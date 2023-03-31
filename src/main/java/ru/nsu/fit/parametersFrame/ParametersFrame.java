@@ -21,7 +21,9 @@ public class ParametersFrame {
         if (parameters == null){
             gPanel.setParameter(false);
             gPanel.setWaitCursor();
-            gPanel.setFilter(filter.execute(originalImage));
+            try {
+                gPanel.setFilter(filter.execute(originalImage));
+            }catch (NullPointerException ignored){}
             gPanel.setDefaultCursor();
             return;
         }
@@ -66,7 +68,9 @@ public class ParametersFrame {
         if (option == JOptionPane.OK_OPTION) {
             gPanel.setParameter(true);
             gPanel.setWaitCursor();
-            gPanel.setFilter(filter.execute(originalImage));
+            try {
+                gPanel.setFilter(filter.execute(originalImage));
+            }catch (NullPointerException ignored){}
             gPanel.setDefaultCursor();
         }
     }

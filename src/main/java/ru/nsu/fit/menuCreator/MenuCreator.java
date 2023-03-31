@@ -268,7 +268,7 @@ public class MenuCreator {
                 });
 
         JRadioButtonMenuItem itemBlackWhite = componentCreator.createRadioButtonMenuItem("Black white", "Black white", menuGroupFilter, filter);
-        JToggleButton toolBarBlackWhite = componentCreator.createJToggleButton("Black white", "src/main/resources/blackWhite1.png", toolBarGroupFilter);
+        JToggleButton toolBarBlackWhite = componentCreator.createJToggleButton("Black white", "src/main/resources/blackWhite.png", toolBarGroupFilter);
         componentCreator.syncToolBarAndMenu(itemBlackWhite, toolBarBlackWhite);
 
         componentCreator.setAction(itemBlackWhite, toolBarBlackWhite,
@@ -280,7 +280,7 @@ public class MenuCreator {
                 });
 
         JRadioButtonMenuItem itemSharpening = componentCreator.createRadioButtonMenuItem("Sharpening", "Sharpening", menuGroupFilter, filter);
-        JToggleButton toolBarSharpening = componentCreator.createJToggleButton("Sharpening", "src/main/resources/sharpness1.png", toolBarGroupFilter);
+        JToggleButton toolBarSharpening = componentCreator.createJToggleButton("Sharpening", "src/main/resources/sharpness.png", toolBarGroupFilter);
         componentCreator.syncToolBarAndMenu(itemSharpening, toolBarSharpening);
 
         componentCreator.setAction(itemSharpening, toolBarSharpening,
