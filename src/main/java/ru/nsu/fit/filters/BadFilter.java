@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import ru.nsu.fit.parametersFrame.*;
 import java.util.List;
 
-public class RussiaFilter implements Filter{
+public class BadFilter implements Filter{
     @Override
     public BufferedImage execute(BufferedImage originalImage) {
         BufferedImage newImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
