@@ -26,6 +26,7 @@ public class MainFrame extends JFrame {
         gPanel = new GraphicsPanel(640, 480);
         JScrollPane scrollPane = new JScrollPane(gPanel);
         add(scrollPane, BorderLayout.CENTER);
+        gPanel.setScrollPane(scrollPane);
 
         // создание меню
         menuBar = new JMenuBar();

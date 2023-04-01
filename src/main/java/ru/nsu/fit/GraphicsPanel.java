@@ -12,6 +12,8 @@ import java.awt.image.BufferedImage;
 public class GraphicsPanel extends JPanel implements MouseInputListener {
     private BufferedImage filterImage;
     private BufferedImage originalImage;
+    private BufferedImage realFilterImage;
+    private BufferedImage realOriginalImage;
     private int width, height;
     private int realWidthImage, realHeightImage;
     private int screenWidth, screenHeight;
@@ -21,6 +23,7 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
     private boolean parameter = false;
     private Point mousePoint;
     private Object regimeInterpolation = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
+    private JScrollPane scrollPane;
 
     public GraphicsPanel(int width, int height){
         this.width = width;
@@ -47,10 +50,17 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         }
     }
 
+    public void setScrollPane(JScrollPane scrollPane) {
+        this.scrollPane = scrollPane;
+    }
+
     @Override
     public void paintComponent(Graphics g){
-        screenHeight = g.getClipBounds().getSize().height;
-        screenWidth = g.getClipBounds().getSize().width;
+        //screenHeight = g.getClipBounds().getSize().height;
+        //screenWidth = g.getClipBounds().getSize().width;
+
+        screenWidth = scrollPane.getViewport().getWidth();
+        screenHeight = scrollPane.getViewport().getHeight();
 
         super.paintComponent(g);
         BufferedImage currentImg = (isFilter) ? filterImage : originalImage;
@@ -128,6 +138,7 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
 
     public void setFilter(BufferedImage newImg){
         filterImage = newImg;
+        realFilterImage = newImg;
         if(parameter)// если параметров нет
             isFilter = true;
         else
@@ -159,8 +170,11 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
 
         originalImage = newImage;
         filterImage = newImage;
+        realOriginalImage = newImage;
+        isFilter = false;
 
         Graphics2D g = originalImage.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
         g.drawImage(openImage, 0, 0,  openImage.getWidth(this), openImage.getHeight(this),this);
 
         this.revalidate();
@@ -186,36 +200,37 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
             BufferedImage newOriginalImage = new BufferedImage(dstWidth, dstHeight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g1 = newOriginalImage.createGraphics();
             g1.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
-            g1.drawImage(originalImage, 0, 0, dstWidth, dstHeight, 0, 0, width, height, null);
+            g1.drawImage(realOriginalImage, 0, 0, dstWidth, dstHeight, 0, 0, width, height, null);
             originalImage = newOriginalImage;
 
             BufferedImage newFilterImage = new BufferedImage(dstWidth, dstHeight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = newFilterImage.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
-            g2.drawImage(filterImage, 0, 0, dstWidth, dstHeight, 0, 0, width, height, null);
+            g2.drawImage(realFilterImage, 0, 0, dstWidth, dstHeight, 0, 0, width, height, null);
             filterImage = newFilterImage;
 
             setPreferredSize(new Dimension(dstWidth, dstHeight));
             width = dstWidth;
             height = dstHeight;
+
+            g1.dispose();
+            g2.dispose();
         }
 
         else{
-            BufferedImage newOriginalImage = new BufferedImage(realWidthImage, realHeightImage, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g1 = newOriginalImage.createGraphics();
-            g1.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
-            g1.drawImage(originalImage, 0, 0, realWidthImage, realHeightImage, 0, 0, width, height, null);
-            originalImage = newOriginalImage;
+            originalImage = realOriginalImage;
 
             BufferedImage newFilterImage = new BufferedImage(realWidthImage, realHeightImage, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = newFilterImage.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
-            g2.drawImage(filterImage, 0, 0, realWidthImage, realHeightImage, 0, 0, width, height, null);
+            g2.drawImage(realFilterImage, 0, 0, realWidthImage, realHeightImage, 0, 0, width, height, null);
             filterImage = newFilterImage;
 
             width = realWidthImage;
             height = realHeightImage;
             setPreferredSize(new Dimension(width, height));
+
+            g2.dispose();
         }
 
         isRealRegime = !isRealRegime;

@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class InterpolationFrame extends JDialog {
     InterpolationFrame(GraphicsPanel panel){
-        setPreferredSize(new Dimension(450, 200));
+        setPreferredSize(new Dimension(300, 200));
         setModalityType(Dialog.ModalityType.TOOLKIT_MODAL);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -26,8 +26,16 @@ public class InterpolationFrame extends JDialog {
             dispose();
         });
 
+        JButton bicubic = new JButton("Bicubic");
+        bicubic.setPreferredSize(new Dimension(150, 30));
+        bicubic.addActionListener(e -> {
+            panel.setRegimeInterpolation(RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            dispose();
+        });
+
         gpanel.add(bilinear);
         gpanel.add(nearestNeighbor);
+        gpanel.add(bicubic);
 
         pack();
         setVisible(true);

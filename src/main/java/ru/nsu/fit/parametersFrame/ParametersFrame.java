@@ -70,7 +70,7 @@ public class ParametersFrame {
             gPanel.setWaitCursor();
             try {
                 gPanel.setFilter(filter.execute(originalImage));
-            }catch (NullPointerException ignored){}
+            }   catch (NullPointerException ignored){}
             gPanel.setDefaultCursor();
         }
     }

@@ -9,7 +9,6 @@ import java.util.List;
 // Аня
 public class Dither implements Filter{
     private List<Parameter> parameters = new ArrayList<>();
-    private ArrayList<Integer> palette = new ArrayList<>();
     private int quantizationNumberRed, quantizationNumberGreen, quantizationNumberBlue;
 
     private double[][][] matrices = {{
@@ -58,8 +57,6 @@ public class Dither implements Filter{
         quantizationNumberGreen = (int)parameters.get(1).getValue();
         quantizationNumberBlue = (int)parameters.get(2).getValue();
 
-        createPalette();
-
         double[][] matrixRed = getMatrix(quantizationNumberRed);
         double[][] matrixGreen = getMatrix(quantizationNumberGreen);
         double[][] matrixBlue = getMatrix(quantizationNumberBlue);
@@ -73,72 +70,26 @@ public class Dither implements Filter{
                 int G = (rgb >> 8) & 0xff;
                 int B =  rgb & 0xff;
 
-                double newR = R + (255. / (quantizationNumberRed - 1)) * (matrixRed[x % matrixRed.length][y % matrixRed.length] /
-                        (matrixRed.length * matrixRed.length) - 1./2);
-                double newG = G + (255. / (quantizationNumberGreen - 1)) * (matrixGreen[x % matrixGreen.length][y % matrixGreen.length] /
-                        (matrixGreen.length * matrixGreen.length) - 1./2);
-                double newB = B + (255. / (quantizationNumberBlue - 1)) * (matrixBlue[x % matrixBlue.length][y % matrixBlue.length] /
-                        (matrixBlue.length * matrixBlue.length) - 1./2);
+                double newR = R + (255. / (quantizationNumberRed - 1)) * ((matrixRed[x % matrixRed.length][y % matrixRed.length] /
+                        (matrixRed.length * matrixRed.length)) - 1./2);
+                double newG = G + (255. / (quantizationNumberGreen - 1)) * ((matrixGreen[x % matrixGreen.length][y % matrixGreen.length] /
+                        (matrixGreen.length * matrixGreen.length)) - 1./2);
+                double newB = B + (255. / (quantizationNumberBlue - 1)) * ((matrixBlue[x % matrixBlue.length][y % matrixBlue.length] /
+                        (matrixBlue.length * matrixBlue.length)) - 1./2);
 
-                int newRGB = getNearestColor(newR, newG, newB);
+                newR = getNearestColor(newR, 255 / (quantizationNumberRed - 1));
+                newG = getNearestColor(newG, 255 / (quantizationNumberRed - 1));
+                newB = getNearestColor(newB, 255 / (quantizationNumberRed - 1));
 
-                newImage.setRGB(x, y, newRGB);
+                newImage.setRGB(x, y, (255 << 24) | ((int)newR << 16) | ((int)newG << 8) | (int)newB);
             }
         }
         return newImage;
     }
 
-    public double diff(double R1, double G1, double B1, double R2, double G2, double B2) {
-        double rdiff = R1 - R2;
-        double gdiff = G1 - G2;
-        double bdiff = B1 - B2;
-        return rdiff * rdiff + gdiff * gdiff + bdiff * bdiff;
-    }
-
-    private int getNearestColor(double R, double G, double B){
-        int resultColor = palette.get(0);
-        double minDiff = diff(R, G, B, (resultColor >> 16) & 0xff, (resultColor >> 8) & 0xff,
-                resultColor & 0xff);
-
-        for (int i = 1; i < palette.size(); ++i){
-            double newDiff = diff(R, G, B, (palette.get(i) >> 16) & 0xff, (palette.get(i) >> 8) & 0xff,
-                    palette.get(i) & 0xff);
-            if(minDiff > newDiff){
-                minDiff = newDiff;
-                resultColor = palette.get(i);
-            }
-        }
-
-        return resultColor;
-    }
-
-    private void createPalette(){
-        palette.clear();
-        int[] valuesRed = new int[quantizationNumberRed];
-        int step = 255 / (quantizationNumberRed - 1);
-        for(int i = 0; i < quantizationNumberRed; ++i){
-            valuesRed[i] = i * step;
-        }
-
-        int[] valuesGreen = new int[quantizationNumberGreen];
-        step = 255 / (quantizationNumberGreen - 1);
-        for(int i = 0; i < quantizationNumberGreen; ++i){
-            valuesGreen[i] = i * step;
-        }
-
-        int[] valuesBlue = new int[quantizationNumberBlue];
-        step = 255 / (quantizationNumberBlue - 1);
-        for(int i = 0; i < quantizationNumberBlue; ++i){
-            valuesBlue[i] = i * step;
-        }
-
-        for(int i : valuesRed){
-            for(int j : valuesGreen){
-                for(int k : valuesBlue){
-                    palette.add((255 << 24) | (i << 16) | (j << 8) | k );
-                }
-            }
-        }
+    private int getNearestColor(double color, int quantizationNumber){
+        color = (int)(Math.round(color / quantizationNumber) * quantizationNumber);
+        return (int)Math.max(0, Math.min(color, 255));
     }
 
     private double[][] getMatrix(int quantizationNumber){
