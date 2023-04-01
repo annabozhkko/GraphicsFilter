@@ -20,8 +20,6 @@ public class GaussianBlur implements Filter{
     @Override
     public BufferedImage execute(BufferedImage image){
         sizeMatrix = (int)parameters.get(0).getValue();
-        //matrix = new double[sizeMatrix * 2 + 1][sizeMatrix * 2 + 1];
-        //createGaussian();
 
         double coef;
         if(sizeMatrix == 3){
@@ -38,8 +36,7 @@ public class GaussianBlur implements Filter{
             coef = 1/74.;
         }
         else{
-            MedianFilter medianFilter = new MedianFilter(sizeMatrix);
-            return medianFilter.execute(image);
+            return averageValueFilter(image);
         }
 
         int r = (sizeMatrix - 1) / 2;
@@ -69,6 +66,45 @@ public class GaussianBlur implements Filter{
             }
         }
 
+        return newImage;
+    }
+
+    private BufferedImage averageValueFilter(BufferedImage image){
+        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+        int r = (sizeMatrix - 1) / 2;
+
+        for(int x = 0; x < image.getWidth(); ++x){
+            for(int y = 0; y < image.getHeight(); ++y){
+                int sumRed = 0;
+                int sumGreen = 0;
+                int sumBlue = 0;
+
+                for(int u = -r; u <= r; ++u){
+                    for(int v = -r; v <= r; ++v){
+                        int pixelX = x + u;
+                        int pixelY = y + v;
+
+                        int rgb;
+                        if (pixelX >= 0 && pixelX < image.getWidth() && pixelY >= 0 && pixelY < image.getHeight()) {
+                            rgb = image.getRGB(pixelX, pixelY);
+                        }
+                        else {
+                            rgb = image.getRGB(x, y);
+                        }
+                        sumRed += (rgb >> 16) & 0xFF;
+                        sumGreen += (rgb >> 8) & 0xFF;
+                        sumBlue += rgb & 0xFF;
+                    }
+                }
+
+                int avgRed = sumRed / (sizeMatrix * sizeMatrix);
+                int avgGreen = sumGreen / (sizeMatrix * sizeMatrix);
+                int avgBlue = sumBlue / (sizeMatrix * sizeMatrix);
+
+                newImage.setRGB(x, y, (255 << 24) | (avgRed << 16) | (avgGreen << 8) | avgBlue);
+            }
+        }
         return newImage;
     }
 
