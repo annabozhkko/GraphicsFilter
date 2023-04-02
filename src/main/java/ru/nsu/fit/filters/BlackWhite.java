@@ -23,7 +23,7 @@ public class BlackWhite implements Filter{
                 float G = (float)((pixel & 0x0000FF00) >> 8); // зеленый
                 float B = (float)(pixel & 0x000000FF); // синий
                 // делаем цвет черно-белым (оттенки серого) - находим среднее арифметическое
-                R = G = B = (R + G + B) / 3.0f;
+                R = G = B = (int) (0.299 * R + 0.587 * G + 0.114 * B);
                 // собираем новый пиксель по частям (по каналам)
                 int newPixel = 0xFF000000 | ((int)R << 16) | ((int)G << 8) | ((int)B);
                 // добавляем его в Bitmap нового изображения

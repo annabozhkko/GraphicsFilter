@@ -17,8 +17,6 @@ public class DitheringA implements Filter{
     }
 
     private static final int[][][] matrices = {
-            null,
-            null,
             {
                     {0, 2},
                     {3, 1}
@@ -62,17 +60,10 @@ public class DitheringA implements Filter{
     private int[][] getMatrix(int colorSpaceSpread) {
         int[][] matrix = null;
         for (int[][] m : matrices) {
-            if (m == null) {
-                continue;
-            }
-
             if (m.length * m.length >= (256 / colorSpaceSpread)) {
                 matrix = m;
                 break;
             }
-        }
-        if (matrix == null) {
-            throw new RuntimeException("Can't find a good matrix");
         }
         return matrix;
     }
