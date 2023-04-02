@@ -17,6 +17,7 @@ public class InterpolationFrame extends JDialog {
         bilinear.addActionListener(e -> {
             panel.setRegimeInterpolation(RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             dispose();
+            panel.revalidate();
         });
 
         JButton nearestNeighbor = new JButton("Nearest neighbor");
@@ -24,6 +25,7 @@ public class InterpolationFrame extends JDialog {
         nearestNeighbor.addActionListener(e -> {
             panel.setRegimeInterpolation(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
             dispose();
+            panel.revalidate();
         });
 
         JButton bicubic = new JButton("Bicubic");
@@ -31,6 +33,7 @@ public class InterpolationFrame extends JDialog {
         bicubic.addActionListener(e -> {
             panel.setRegimeInterpolation(RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             dispose();
+            panel.revalidate();
         });
 
         gpanel.add(bilinear);

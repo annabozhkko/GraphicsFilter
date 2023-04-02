@@ -139,10 +139,10 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
     public void setFilter(BufferedImage newImg){
         filterImage = newImg;
         realFilterImage = newImg;
-        if(parameter)// если параметров нет
+        //if(parameter)// если параметры есть
             isFilter = true;
-        else
-            isFilter = !isFilter;
+        /*else
+            isFilter = !isFilter;*/
         repaint();
     }
 
