@@ -1,5 +1,7 @@
 package ru.nsu.fit;
 
+import ru.nsu.fit.filters.Filter;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.event.MouseInputListener;
@@ -17,15 +19,15 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
     private int width, height;
     private int realWidthImage, realHeightImage;
     private int screenWidth, screenHeight;
+    private Filter filter;
 
     private boolean isFilter = false;
     private boolean isRealRegime = true;
-    private boolean parameter = false;
     private Point mousePoint;
     private Object regimeInterpolation = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
     private JScrollPane scrollPane;
 
-    public GraphicsPanel(int width, int height){
+    public GraphicsPanel(int width, int height) {
         this.width = width;
         this.height = height;
         setPreferredSize(new Dimension(width, height));
@@ -41,11 +43,11 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         // слежение за мышкой
         addMouseMotionListener(this);
     }
-    
+
     static class ResizeListener extends ComponentAdapter {
         @Override
         public void componentResized(ComponentEvent e) {
-           e.getComponent().setSize(new Dimension(e.getComponent().getWidth(), e.getComponent().getHeight()));
+            e.getComponent().setSize(new Dimension(e.getComponent().getWidth(), e.getComponent().getHeight()));
             super.componentResized(e);
         }
     }
@@ -55,7 +57,7 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
     }
 
     @Override
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         //screenHeight = g.getClipBounds().getSize().height;
         //screenWidth = g.getClipBounds().getSize().width;
 
@@ -64,15 +66,14 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
 
         super.paintComponent(g);
         BufferedImage currentImg = (isFilter) ? filterImage : originalImage;
-       // var w = g.getClipBounds().getSize().width;
-      //  var h = g.getClipBounds().getSize().height;
+        // var w = g.getClipBounds().getSize().width;
+        //  var h = g.getClipBounds().getSize().height;
         g.drawImage(currentImg, 6, 6, width, height, null);
         //setPreferredSize(new Dimension(w, h));
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //setFilter(filterImage);
         isFilter = !isFilter;
         repaint();
     }
@@ -89,10 +90,12 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
 
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -106,29 +109,29 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         int maxViewPosX = this.getWidth() - viewport.getWidth();
         int maxViewPosY = this.getHeight() - viewport.getHeight();
 
-        if(this.getWidth() > viewport.getWidth()) {
+        if (this.getWidth() > viewport.getWidth()) {
             viewPos.x -= dragEventPoint.x - mousePoint.x;
 
-            if(viewPos.x < 0) {
+            if (viewPos.x < 0) {
                 viewPos.x = 0;
                 mousePoint.x = dragEventPoint.x;
             }
 
-            if(viewPos.x > maxViewPosX) {
+            if (viewPos.x > maxViewPosX) {
                 viewPos.x = maxViewPosX;
                 mousePoint.x = dragEventPoint.x;
             }
         }
 
-        if(this.getHeight() > viewport.getHeight()) {
+        if (this.getHeight() > viewport.getHeight()) {
             viewPos.y -= dragEventPoint.y - mousePoint.y;
 
-            if(viewPos.y < 0) {
+            if (viewPos.y < 0) {
                 viewPos.y = 0;
                 mousePoint.y = dragEventPoint.y;
             }
 
-            if(viewPos.y > maxViewPosY) {
+            if (viewPos.y > maxViewPosY) {
                 viewPos.y = maxViewPosY;
                 mousePoint.y = dragEventPoint.y;
             }
@@ -136,18 +139,19 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         viewport.setViewPosition(viewPos);
     }
 
-    public void setFilter(BufferedImage newImg){
-        filterImage = newImg;
-        realFilterImage = newImg;
-        //if(parameter)// если параметры есть
+    public void setFilter(Filter filter) {
+        if (this.filter == filter && filter.getParameters() == null)
+            isFilter = !isFilter;
+        else {
             isFilter = true;
-        /*else
-            isFilter = !isFilter;*/
+            this.filter = filter;
+            this.setWaitCursor();
+            BufferedImage newImg = filter.execute(originalImage);
+            this.setDefaultCursor();
+            filterImage = newImg;
+            realFilterImage = newImg;
+        }
         repaint();
-    }
-
-    public void setParameter(boolean parameter) {
-        this.parameter = parameter;
     }
 
     public boolean isFilter() {
@@ -158,7 +162,7 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         this.regimeInterpolation = regimeInterpolation;
     }
 
-    public void setImage(Image openImage){
+    public void setImage(Image openImage) {
         width = openImage.getWidth(this);
         height = openImage.getHeight(this);
         realWidthImage = width;
@@ -175,27 +179,30 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
 
         Graphics2D g = originalImage.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
-        g.drawImage(openImage, 0, 0,  openImage.getWidth(this), openImage.getHeight(this),this);
+        g.drawImage(openImage, 0, 0, openImage.getWidth(this), openImage.getHeight(this), this);
 
         this.revalidate();
 
         repaint();
     }
 
-    public BufferedImage getOriginalImage(){
+    public BufferedImage getOriginalImage() {
         return originalImage;
     }
-    public BufferedImage getFilterImage(){ return filterImage; }
 
-    public void fitToScreen(){
+    public BufferedImage getFilterImage() {
+        return filterImage;
+    }
+
+    public void fitToScreen() {
         new InterpolationFrame(this);
-        if(isRealRegime){
+        if (isRealRegime) {
             double widthFrac = (double) width / screenWidth;
             double heightFrac = (double) height / screenHeight;
             double frac = Math.max(widthFrac, heightFrac);
 
-            int dstWidth = (int)(width / frac);
-            int dstHeight = (int)(height / frac);
+            int dstWidth = (int) (width / frac);
+            int dstHeight = (int) (height / frac);
 
             BufferedImage newOriginalImage = new BufferedImage(dstWidth, dstHeight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g1 = newOriginalImage.createGraphics();
@@ -215,9 +222,7 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
 
             g1.dispose();
             g2.dispose();
-        }
-
-        else{
+        } else {
             originalImage = realOriginalImage;
 
             BufferedImage newFilterImage = new BufferedImage(realWidthImage, realHeightImage, BufferedImage.TYPE_INT_ARGB);
@@ -237,11 +242,11 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         repaint();
     }
 
-    public void setWaitCursor(){
+    public void setWaitCursor() {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     }
 
-    public void setDefaultCursor(){
+    public void setDefaultCursor() {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 }

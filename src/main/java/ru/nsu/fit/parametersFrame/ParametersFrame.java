@@ -14,17 +14,14 @@ public class ParametersFrame {
     private List<Parameter> parameters;
     private JPanel panel = new JPanel();
 
-    public ParametersFrame(Filter filter, BufferedImage originalImage, GraphicsPanel gPanel){
+    public ParametersFrame(Filter filter, GraphicsPanel gPanel){
         parameters = filter.getParameters();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         if (parameters == null){
-            gPanel.setParameter(false);
-            gPanel.setWaitCursor();
             try {
-                gPanel.setFilter(filter.execute(originalImage));
+                gPanel.setFilter(filter);
             }catch (NullPointerException ignored){}
-            gPanel.setDefaultCursor();
             return;
         }
 
@@ -66,12 +63,9 @@ public class ParametersFrame {
         int option = JOptionPane.showOptionDialog(null, panel, "Enter the parameters",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
         if (option == JOptionPane.OK_OPTION) {
-            gPanel.setParameter(true);
-            gPanel.setWaitCursor();
             try {
-                gPanel.setFilter(filter.execute(originalImage));
+                gPanel.setFilter(filter);
             }   catch (NullPointerException ignored){}
-            gPanel.setDefaultCursor();
         }
     }
 }

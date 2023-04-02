@@ -105,7 +105,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(negative, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(negative, mainFrame.gPanel);
                     }
                 });
 
@@ -117,7 +117,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(gamma, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(gamma, mainFrame.gPanel);
                     }
                 });
 
@@ -129,7 +129,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(highlightBorderRoberts, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(highlightBorderRoberts, mainFrame.gPanel);
                     }
                 });
 
@@ -141,7 +141,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(highlightBorderSobel, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(highlightBorderSobel, mainFrame.gPanel);
                     }
                 });
 
@@ -153,7 +153,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(ditheringM, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(ditheringM, mainFrame.gPanel);
                     }
                 });
 
@@ -165,7 +165,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(FSditheringM, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(FSditheringM, mainFrame.gPanel);
                     }
                 });
 
@@ -177,7 +177,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(glassFilter, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(glassFilter, mainFrame.gPanel);
                     }
                 });
 
@@ -191,7 +191,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(dither1, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(dither1, mainFrame.gPanel);
                     }
                 });
 
@@ -203,7 +203,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(floydSteinberg1, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(floydSteinberg1, mainFrame.gPanel);
                     }
                 });
 
@@ -215,7 +215,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(embossing, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(embossing, mainFrame.gPanel);
                     }
                 });
 
@@ -227,7 +227,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(gaussianBlur, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(gaussianBlur, mainFrame.gPanel);
                     }
                 });
 
@@ -239,7 +239,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(watercolorization, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(watercolorization, mainFrame.gPanel);
                     }
                 });
 
@@ -251,7 +251,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(vignetteFilter, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(vignetteFilter, mainFrame.gPanel);
                     }
                 });
 
@@ -265,7 +265,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(rotate, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(rotate, mainFrame.gPanel);
                     }
                 });
 
@@ -277,7 +277,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(blackWhite, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(blackWhite, mainFrame.gPanel);
                     }
                 });
 
@@ -289,7 +289,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(ditheringA, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(ditheringA, mainFrame.gPanel);
                     }
                 });
 
@@ -301,7 +301,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(fsa, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(fsa, mainFrame.gPanel);
                     }
                 });
 
@@ -314,7 +314,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(sharpeningFilter, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(sharpeningFilter, mainFrame.gPanel);
                     }
                 });
 
@@ -326,7 +326,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(badFilter, mainFrame.gPanel.getOriginalImage(), mainFrame.gPanel);
+                        new ParametersFrame(badFilter, mainFrame.gPanel);
                     }
                 });
 
