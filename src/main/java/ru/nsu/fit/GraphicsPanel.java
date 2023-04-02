@@ -186,10 +186,6 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         repaint();
     }
 
-    public BufferedImage getOriginalImage() {
-        return originalImage;
-    }
-
     public BufferedImage getFilterImage() {
         return filterImage;
     }
@@ -228,7 +224,8 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
             BufferedImage newFilterImage = new BufferedImage(realWidthImage, realHeightImage, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = newFilterImage.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
-            g2.drawImage(realFilterImage, 0, 0, realWidthImage, realHeightImage, 0, 0, width, height, null);
+            g2.drawImage(realFilterImage, 0, 0, realWidthImage, realHeightImage, 0, 0,
+                    realFilterImage.getWidth(), realFilterImage.getHeight(), null);
             filterImage = newFilterImage;
 
             width = realWidthImage;

@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class ParametersFrame {
@@ -28,7 +27,7 @@ public class ParametersFrame {
         for(Parameter parameter : parameters){
             JPanel oneLineParameters = new JPanel(new FlowLayout());
             JTextField editBox = new JTextField();
-            JSlider slider = new JSlider((int)parameter.getMin(),(int) parameter.getMax());
+            JSlider slider = new JSlider((int)parameter.getMin(),(int)parameter.getMax());
             slider.setMinorTickSpacing((int)parameter.getStep());
             slider.setSnapToTicks(true);
 
@@ -39,7 +38,6 @@ public class ParametersFrame {
                 public void keyReleased(KeyEvent e) {
                     if(editBox.getText().equals(""))
                         return;
-                   // int value = Integer.parseInt(editBox.getText());
                     double value = Double.parseDouble(editBox.getText());
                     slider.setValue((int)value);
                     parameter.setValue(value);
