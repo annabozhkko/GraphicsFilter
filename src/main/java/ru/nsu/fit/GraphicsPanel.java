@@ -16,7 +16,7 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
     private BufferedImage originalImage;
     private BufferedImage realFilterImage;
     private BufferedImage realOriginalImage;
-    private int width, height;
+    //private int width, height;
     private int realWidthImage, realHeightImage;
     private int screenWidth, screenHeight;
     private Filter filter;
@@ -28,8 +28,8 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
     private JScrollPane scrollPane;
 
     public GraphicsPanel(int width, int height) {
-        this.width = width;
-        this.height = height;
+        //this.width = width;
+        //this.height = height;
         setPreferredSize(new Dimension(width, height));
         addMouseListener(this);
         addComponentListener(new GraphicsPanel.ResizeListener());
@@ -68,7 +68,10 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         BufferedImage currentImg = (isFilter) ? filterImage : originalImage;
         // var w = g.getClipBounds().getSize().width;
         //  var h = g.getClipBounds().getSize().height;
-        g.drawImage(currentImg, 6, 6, width, height, null);
+        if(currentImg != null) {
+            g.drawImage(currentImg, 6, 6, currentImg.getWidth(), currentImg.getHeight(), null);
+            setPreferredSize(new Dimension(currentImg.getWidth(), currentImg.getHeight()));
+        }
         //setPreferredSize(new Dimension(w, h));
     }
 
@@ -163,14 +166,16 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
     }
 
     public void setImage(Image openImage) {
-        width = openImage.getWidth(this);
-        height = openImage.getHeight(this);
-        realWidthImage = width;
-        realHeightImage = height;
+        //width = openImage.getWidth(this);
+        //height = openImage.getHeight(this);
+        //realWidthImage = width;
+        //realHeightImage = height;
+        realWidthImage = openImage.getWidth(this);
+        realHeightImage = openImage.getHeight(this);
         isRealRegime = true;
 
-        BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        setPreferredSize(new Dimension(width, height));
+        BufferedImage newImage = new BufferedImage(realWidthImage, realHeightImage, BufferedImage.TYPE_INT_ARGB);
+        setPreferredSize(new Dimension(realWidthImage, realHeightImage));
 
         originalImage = newImage;
         filterImage = newImage;
@@ -192,29 +197,35 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
 
     public void fitToScreen() {
         new InterpolationFrame(this);
+        BufferedImage currentImg = (isFilter) ? filterImage : originalImage;
+        if(currentImg == null)
+            return;
+
         if (isRealRegime) {
-            double widthFrac = (double) width / screenWidth;
-            double heightFrac = (double) height / screenHeight;
+            double widthFrac = (double) currentImg.getWidth() / screenWidth;
+            double heightFrac = (double) currentImg.getHeight() / screenHeight;
             double frac = Math.max(widthFrac, heightFrac);
 
-            int dstWidth = (int) (width / frac);
-            int dstHeight = (int) (height / frac);
+            int dstWidth = (int) (currentImg.getWidth() / frac);
+            int dstHeight = (int) (currentImg.getHeight() / frac);
 
             BufferedImage newOriginalImage = new BufferedImage(dstWidth, dstHeight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g1 = newOriginalImage.createGraphics();
             g1.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
-            g1.drawImage(realOriginalImage, 0, 0, dstWidth, dstHeight, 0, 0, width, height, null);
+            g1.drawImage(realOriginalImage, 0, 0, dstWidth, dstHeight, 0, 0, realOriginalImage.getWidth(), realOriginalImage.getHeight(), null);
             originalImage = newOriginalImage;
 
             BufferedImage newFilterImage = new BufferedImage(dstWidth, dstHeight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = newFilterImage.createGraphics();
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
-            g2.drawImage(realFilterImage, 0, 0, dstWidth, dstHeight, 0, 0, width, height, null);
-            filterImage = newFilterImage;
+            if(realFilterImage != null) {
+                g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
+                g2.drawImage(realFilterImage, 0, 0, dstWidth, dstHeight, 0, 0, realFilterImage.getWidth(), realFilterImage.getHeight(), null);
+                filterImage = newFilterImage;
+            }
 
             setPreferredSize(new Dimension(dstWidth, dstHeight));
-            width = dstWidth;
-            height = dstHeight;
+            //width = dstWidth;
+            //height = dstHeight;
 
             g1.dispose();
             g2.dispose();
@@ -223,14 +234,16 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
 
             BufferedImage newFilterImage = new BufferedImage(realWidthImage, realHeightImage, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = newFilterImage.createGraphics();
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
-            g2.drawImage(realFilterImage, 0, 0, realWidthImage, realHeightImage, 0, 0,
-                    realFilterImage.getWidth(), realFilterImage.getHeight(), null);
-            filterImage = newFilterImage;
+            if(realFilterImage != null) {
+                g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
+                g2.drawImage(realFilterImage, 0, 0, realWidthImage, realHeightImage, 0, 0,
+                        realFilterImage.getWidth(), realFilterImage.getHeight(), null);
+                filterImage = newFilterImage;
+            }
 
-            width = realWidthImage;
-            height = realHeightImage;
-            setPreferredSize(new Dimension(width, height));
+            //width = realWidthImage;
+            //height = realHeightImage;
+            setPreferredSize(new Dimension(realWidthImage, realHeightImage));
 
             g2.dispose();
         }
