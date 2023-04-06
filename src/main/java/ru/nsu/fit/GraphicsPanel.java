@@ -154,6 +154,7 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
             filterImage = newImg;
             realFilterImage = newImg;
         }
+        revalidate();
         repaint();
     }
 
@@ -181,6 +182,7 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         filterImage = newImage;
         realOriginalImage = newImage;
         isFilter = false;
+        this.filter = null;
 
         Graphics2D g = originalImage.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, regimeInterpolation);
