@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class InterpolationFrame extends JDialog {
-    InterpolationFrame(GraphicsPanel panel){
+    public InterpolationFrame(GraphicsPanel panel){
         setPreferredSize(new Dimension(300, 200));
         setModalityType(Dialog.ModalityType.TOOLKIT_MODAL);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -17,6 +17,7 @@ public class InterpolationFrame extends JDialog {
         bilinear.addActionListener(e -> {
             panel.setRegimeInterpolation(RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             dispose();
+            panel.fitToScreen();
             panel.revalidate();
         });
 
@@ -25,6 +26,7 @@ public class InterpolationFrame extends JDialog {
         nearestNeighbor.addActionListener(e -> {
             panel.setRegimeInterpolation(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
             dispose();
+            panel.fitToScreen();
             panel.revalidate();
         });
 
@@ -33,6 +35,7 @@ public class InterpolationFrame extends JDialog {
         bicubic.addActionListener(e -> {
             panel.setRegimeInterpolation(RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             dispose();
+            panel.fitToScreen();
             panel.revalidate();
         });
 

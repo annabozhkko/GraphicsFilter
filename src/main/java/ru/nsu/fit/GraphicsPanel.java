@@ -198,7 +198,6 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
     }
 
     public void fitToScreen() {
-        new InterpolationFrame(this);
         BufferedImage currentImg = (isFilter) ? filterImage : originalImage;
         if(currentImg == null)
             return;
@@ -251,6 +250,7 @@ public class GraphicsPanel extends JPanel implements MouseInputListener {
         }
 
         isRealRegime = !isRealRegime;
+        revalidate();
         repaint();
     }
 

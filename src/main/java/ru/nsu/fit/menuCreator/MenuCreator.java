@@ -2,6 +2,7 @@ package ru.nsu.fit.menuCreator;
 
 import ru.nsu.fit.*;
 import ru.nsu.fit.AboutFrame;
+import ru.nsu.fit.InterpolationFrame;
 
 import ru.nsu.fit.filters.*;
 import ru.nsu.fit.parametersFrame.ParametersFrame;
@@ -339,7 +340,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        mainFrame.gPanel.fitToScreen();
+                        new InterpolationFrame(mainFrame.gPanel);
                     }
                 });
 
