@@ -16,6 +16,7 @@ public class Rotation implements Filter{
     @Override
     public BufferedImage execute(BufferedImage originalImage) {
         double angle = parameters.get(0).getValue();
+        /*
         var sin = Math.abs(Math.sin(Math.toRadians(angle)));
         var cos = Math.abs(Math.cos(Math.toRadians(angle)));
         var w = originalImage.getWidth();
@@ -33,6 +34,34 @@ public class Rotation implements Filter{
             }
         }
         return result;
+
+         */
+
+        // Вычислить размеры нового изображения
+        int w = originalImage.getWidth();
+        int h = originalImage.getHeight();
+        double radianAngle = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(radianAngle));
+        double cos = Math.abs(Math.cos(radianAngle));
+        int newW = (int) (h * sin + w * cos);
+        int newH = (int) (h * cos + w * sin);
+
+        // Создать новое изображение и заполнить его черным цветом
+        BufferedImage newImage = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+        // Выполнить поворот по пикселям
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                int newX = (int) ((x - w/2) * Math.cos(radianAngle) + (y - h/2) * Math.sin(radianAngle) + newW/2);
+                int newY = (int) (-(x - w/2) * Math.sin(radianAngle) + (y - h/2) * Math.cos(radianAngle) + newH/2);
+                if (newX >= 0 && newX < newW && newY >= 0 && newY < newH) {
+                    int rgb = originalImage.getRGB(x, y);
+                    newImage.setRGB(newX, newY, rgb);
+                }
+            }
+        }
+
+        return newImage;
     }
 
     @Override

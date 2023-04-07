@@ -35,6 +35,7 @@ public class MenuCreator {
     private VignetteFilter vignetteFilter = new VignetteFilter();
     private DitheringA ditheringA = new DitheringA();
     private FSA fsa = new FSA();
+    private Rotation rotation = new Rotation();
 
     public MenuCreator(MainFrame frame) {
         mainFrame = frame;
@@ -266,7 +267,7 @@ public class MenuCreator {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ParametersFrame(rotate, mainFrame.gPanel);
+                        new ParametersFrame(rotation, mainFrame.gPanel);
                     }
                 });
 
