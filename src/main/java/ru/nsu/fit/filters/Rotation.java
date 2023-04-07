@@ -2,6 +2,7 @@ package ru.nsu.fit.filters;
 
 import ru.nsu.fit.parametersFrame.Parameter;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,8 @@ public class Rotation implements Filter{
         var newW = (int) Math.floor(w * cos + h * sin);
         var newH = (int) Math.floor(h * cos + w * sin);
         var result = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
-        for (int y = 1; y < h; y++) {
-            for (int x = 1; x < w; x++) {
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
                 var newX = (int) Math.floor(x * cos + y * sin);
                 var newY = (int) Math.floor(y * cos + x * sin);
                 var rgb = originalImage.getRGB(x,y);
@@ -60,8 +61,81 @@ public class Rotation implements Filter{
                 }
             }
         }
+        return closeHoles(newImage);
+    }
 
-        return newImage;
+    private BufferedImage closeHoles(BufferedImage image) {
+        var white = new Color(255, 255, 255);
+        for (int x = 1; x<image.getWidth()-1; x++) {
+            for (int y = 1; y<image.getHeight()-1; y++) {
+                //System.out.println(image.getRGB(x,y));
+                if (image.getRGB(x,y) == 0){
+                    //System.out.println("+");
+                    int r = 0;
+                    int g = 0;
+                    int b = 0;
+                    var rgb = image.getRGB(x-1,y-1);
+                    r+=getRed(rgb);
+                    g+=getGreen(rgb);
+                    b+=getBlue(rgb);
+                    rgb = image.getRGB(x,y-1);
+                    r+=getRed(rgb);
+                    g+=getGreen(rgb);
+                    b+=getBlue(rgb);
+                    rgb = image.getRGB(x+1,y-1);
+                    r+=getRed(rgb);
+                    g+=getGreen(rgb);
+                    b+=getBlue(rgb);
+                    rgb = image.getRGB(x-1,y);
+                    r+=getRed(rgb);
+                    g+=getGreen(rgb);
+                    b+=getBlue(rgb);
+                    rgb = image.getRGB(x+1,y-1);
+                    r+=getRed(rgb);
+                    g+=getGreen(rgb);
+                    b+=getBlue(rgb);
+                    rgb = image.getRGB(x-1,y+1);
+                    r+=getRed(rgb);
+                    g+=getGreen(rgb);
+                    b+=getBlue(rgb);
+                    rgb = image.getRGB(x,y+1);
+                    r+=getRed(rgb);
+                    g+=getGreen(rgb);
+                    b+=getBlue(rgb);
+                    rgb = image.getRGB(x+1,y+1);
+                    r+=getRed(rgb);
+                    g+=getGreen(rgb);
+                    b+=getBlue(rgb);
+                    r = (int) r/8;
+                    g = (int) g/8;
+                    b = (int) b/8;
+                    if (!(r==0 && b==0 && g==0)){
+                        var setrgb = composeColor(r, g, b);
+                        image.setRGB(x, y, setrgb);
+                    }
+                }
+            }
+        }
+        return image;
+    }
+
+    public static int composeColor(int r, int g, int b) {
+        return ((0xFF) << 24) |
+                ((r & 0xFF) << 16) |
+                ((g & 0xFF) << 8) |
+                (b & 0xFF);
+    }
+
+    public static int getRed(int rgb) {
+        return (rgb >> 16) & 0xFF;
+    }
+
+    public static int getGreen(int rgb) {
+        return (rgb >> 8) & 0xFF;
+    }
+
+    public static int getBlue(int rgb) {
+        return rgb & 0xFF;
     }
 
     @Override
