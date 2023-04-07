@@ -2,6 +2,7 @@ package ru.nsu.fit.filters;
 
 import ru.nsu.fit.parametersFrame.Parameter;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,11 @@ public class Rotation implements Filter{
 
         // Создать новое изображение и заполнить его черным цветом
         BufferedImage newImage = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+        for(int i = 0; i < newW; ++i) {
+            for (int j = 0; j < newH; ++j) {
+                newImage.setRGB(i, j, Color.WHITE.getRGB());
+            }
+        }
 
         // Выполнить поворот по пикселям
         for (int x = 0; x < w; x++) {
@@ -60,6 +66,47 @@ public class Rotation implements Filter{
                 }
             }
         }
+
+        for (int x = 0; x < newW; x++) {
+            for (int y = 0; y < newH; y++) {
+                if(newImage.getRGB(x, y) != Color.WHITE.getRGB()){
+                    continue;
+                }
+                int sumRed = 0;
+                int sumGreen = 0;
+                int sumBlue = 0;
+
+                int countPixels = 0;
+
+                for(int u = -1; u <= 1; ++u){
+                    for(int v = -1; v <= 1; ++v){
+                        if(u == 0 && v == 0){
+                            continue;
+                        }
+                        int pixelX = x + u;
+                        int pixelY = y + v;
+
+                        if (pixelX >= 0 && pixelX < newImage.getWidth() && pixelY >= 0 && pixelY < newImage.getHeight()) {
+                            int rgb = newImage.getRGB(pixelX, pixelY);
+                            sumRed += (rgb >> 16) & 0xFF;
+                            sumGreen += (rgb >> 8) & 0xFF;
+                            sumBlue += rgb & 0xFF;
+                            //System.out.println(rgb);
+                            countPixels++;
+                        }
+                    }
+                }
+
+                int avgRed = sumRed / countPixels;
+                int avgGreen = sumGreen / countPixels;
+                int avgBlue = sumBlue / countPixels;
+
+                //System.out.println(avgRed + " " + avgGreen + " " + avgBlue);
+
+                newImage.setRGB(x, y, (255 << 24) | (avgRed << 16) | (avgGreen << 8) | avgBlue);
+            }
+        }
+
 
         return newImage;
     }

@@ -80,6 +80,8 @@ public class GaussianBlur implements Filter{
                 int sumGreen = 0;
                 int sumBlue = 0;
 
+                int countPixels = 0;
+
                 for(int u = -r; u <= r; ++u){
                     for(int v = -r; v <= r; ++v){
                         int pixelX = x + u;
@@ -88,19 +90,17 @@ public class GaussianBlur implements Filter{
                         int rgb;
                         if (pixelX >= 0 && pixelX < image.getWidth() && pixelY >= 0 && pixelY < image.getHeight()) {
                             rgb = image.getRGB(pixelX, pixelY);
+                            sumRed += (rgb >> 16) & 0xFF;
+                            sumGreen += (rgb >> 8) & 0xFF;
+                            sumBlue += rgb & 0xFF;
+                            countPixels++;
                         }
-                        else {
-                            rgb = image.getRGB(x, y);
-                        }
-                        sumRed += (rgb >> 16) & 0xFF;
-                        sumGreen += (rgb >> 8) & 0xFF;
-                        sumBlue += rgb & 0xFF;
                     }
                 }
 
-                int avgRed = sumRed / (sizeMatrix * sizeMatrix);
-                int avgGreen = sumGreen / (sizeMatrix * sizeMatrix);
-                int avgBlue = sumBlue / (sizeMatrix * sizeMatrix);
+                int avgRed = sumRed / countPixels;
+                int avgGreen = sumGreen / countPixels;
+                int avgBlue = sumBlue / countPixels;
 
                 newImage.setRGB(x, y, (255 << 24) | (avgRed << 16) | (avgGreen << 8) | avgBlue);
             }
